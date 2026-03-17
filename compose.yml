@@ -1,0 +1,12 @@
+services:
+  esp-builder:
+    build: .
+    volumes:
+      - ./ESPTimeCast_ESP32:/workspace/ESPTimeCast_ESP32
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    command: >
+      sh -c "
+        arduino-cli compile --fqbn esp32:esp32:esp32:PartitionScheme=no_ota /workspace/ESPTimeCast_ESP32 &&
+        arduino-cli upload --fqbn esp32:esp32:esp32:PartitionScheme=no_ota,UploadSpeed=460800 --port /dev/ttyUSB0 /workspace/ESPTimeCast_ESP32
+      "

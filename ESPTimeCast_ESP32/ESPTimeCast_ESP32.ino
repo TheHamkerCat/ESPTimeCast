@@ -54,9 +54,9 @@
 
 #elif defined(ESP32)
 // Default ESP32 boards (DevKit, WROOM, etc)
-#define CLK_PIN 18
-#define CS_PIN 23
-#define DATA_PIN 5
+#define CLK_PIN 12
+#define CS_PIN 13
+#define DATA_PIN 15
 
 #else
 #error "Unsupported board!"
@@ -90,8 +90,16 @@ bool isNetworkBusy = false;
 
 // --- Device identity ---
 const char *DEFAULT_HOSTNAME = "esptimecast";
-const char *DEFAULT_AP_PASSWORD = "12345678";
-const char *DEFAULT_AP_SSID = "ESPTimeCast";
+#if __has_include("config_local.h")
+#include "config_local.h"
+#pragma message("ESPTimeCast™: Using local config overrides")
+#endif
+#ifndef DEFAULT_AP_PASSWORD
+#define DEFAULT_AP_PASSWORD "12345678"
+#endif
+#ifndef DEFAULT_AP_SSID
+#define DEFAULT_AP_SSID "ESPTimeCast"
+#endif
 String deviceHostname = DEFAULT_HOSTNAME;
 
 // WiFi and configuration globals
@@ -149,6 +157,7 @@ bool clockOnlyDuringDimming = false;
 bool configDirty = false;
 unsigned long lastBrightnessChange = 0;
 const unsigned long saveDelay = 1200;  // 1.2 seconds
+
 int startTotal, endTotal;
 bool dimActive = false;
 

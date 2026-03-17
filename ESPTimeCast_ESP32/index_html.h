@@ -1,6 +1,4 @@
 #pragma once
-// index_html.h
-
 const char index_html[] PROGMEM = R"rawliteral(
 <!doctype html>
 <html lang="en">
@@ -16,13 +14,14 @@ const char index_html[] PROGMEM = R"rawliteral(
     <title>ESPTimeCast Settings</title>
     <style>
       :root {
-        --bg-gradient: linear-gradient(135deg,
-            #081f56 0%,
-            #110f2e 50%,
-            #441a65 100%);
-        --accent-color: #0ea5e9;
-        --glass-bg: rgba(255, 255, 255, 0.04);
-        --glass-border: rgba(255, 255, 255, 0.12);
+        --accent-color: #f97316;
+        --accent-hover: #ea580c;
+        --bg-color: #f5f5f5;
+        --card-bg: #ffffff;
+        --text-color: #1a1a1a;
+        --text-muted: #555555;
+        --border-color: #d4d4d4;
+        --section-border: #f97316;
       }
 
       .ssid-wrapper {
@@ -33,20 +32,21 @@ const char index_html[] PROGMEM = R"rawliteral(
         display: flex;
         box-sizing: border-box;
         width: 100%;
-        border: 1.5px solid rgba(180, 230, 255, 0.08);
-        border-radius: 8px;
-        background-color: rgba(225, 245, 255, 0.07);
-        color: #ffffff;
+        border: 1px solid var(--border-color);
+        border-radius: 0;
+        background-color: #ffffff;
+        color: var(--text-color);
         font-size: 1rem;
         appearance: none;
       }
 
       #ssid {
-        border-radius: 8px 0 0 8px;
+        border-radius: 0;
         flex: 1;
         border: none;
         outline: none;
         background: transparent;
+        color: var(--text-color);
       }
 
       .icon-btn {
@@ -65,14 +65,18 @@ const char index_html[] PROGMEM = R"rawliteral(
         background: transparent;
         border: none;
         width: 40px;
-        border-left: 1.5px solid rgba(180, 230, 255, 0.08);
+        border-left: 1px solid var(--border-color);
       }
 
       #arrowBtn>svg {
         position: relative;
         top: 2px;
-        filter: invert(0);
+        filter: none;
         opacity: 1;
+      }
+
+      #arrowBtn path[style*="fill: #fff"] {
+        fill: var(--text-color) !important;
       }
 
       #arrowBtn:disabled>svg {
@@ -83,22 +87,22 @@ const char index_html[] PROGMEM = R"rawliteral(
 
       #arrowBtn:hover {
         transform: translateY(-1px);
-        box-shadow: 0 6px 16px rgba(0, 122, 255, 0.35);
+        background: #f5f5f5;
       }
 
       #arrowBtn:disabled:hover {
         transform: translateY(0px);
-        box-shadow: none;
+        background: none;
       }
 
       #arrowBtn:disabled {
         cursor: not-allowed;
         background: none;
-        color: rgba(255, 255, 255, 0.25);
+        color: rgba(0, 0, 0, 0.25);
       }
 
       #scanBtn {
-        border-radius: 0 8px 8px 0;
+        border-radius: 0;
         width: 75px;
         padding: 0;
         text-align: center;
@@ -110,7 +114,7 @@ const char index_html[] PROGMEM = R"rawliteral(
       }
 
       #scanBtn:disabled {
-        background: rgba(255, 255, 255, 0.5);
+        background: rgba(249, 115, 22, 0.5);
         cursor: wait;
       }
 
@@ -121,10 +125,10 @@ const char index_html[] PROGMEM = R"rawliteral(
         overflow-y: auto;
         background: white;
         border: 1px solid var(--border-color);
-        border-radius: 6px;
+        border-radius: 0;
         display: none;
         z-index: 1000;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
 
       .ssid-option {
@@ -143,19 +147,17 @@ const char index_html[] PROGMEM = R"rawliteral(
       }
 
       html {
-        background: var(--bg-gradient);
+        background: var(--bg-color);
         height: 100%;
-        background-attachment: fixed;
       }
 
       body {
-        font-family: Roboto, system-ui;
+        font-family: -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
         margin: 0;
         padding: 2rem 1rem;
-        color: #ffffff;
-        background-repeat: no-repeat, repeat, repeat;
+        color: var(--text-color);
         opacity: 0;
-        transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: opacity 0.4s ease;
         visibility: hidden;
         height: 100%;
         line-height: 1.5;
@@ -176,25 +178,32 @@ const char index_html[] PROGMEM = R"rawliteral(
         text-align: center;
         font-size: 1.5rem;
         margin-bottom: 1.5rem;
-        color: #ffffff;
+        color: var(--text-color);
       }
 
       h2 {
-        margin-top: 4rem;
-        margin-bottom: 0;
+        margin-top: 2.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-color);
+        padding-left: 0.75rem;
+        border-left: 4px solid var(--section-border);
       }
 
-      h3{
+      h3 {
         font-weight: normal;
         font-size: 1.35rem;
         margin: 0.5rem 0 0 0;
       }
 
-      #savingModalContent p{
+      #savingModalContent p {
         line-height: 1.6rem;
       }
 
-      .modal-buttons{
+      .modal-buttons {
         display: flex;
         justify-content: center;
         gap: 1rem;
@@ -207,33 +216,34 @@ const char index_html[] PROGMEM = R"rawliteral(
       .logo {
         display: flex;
         justify-content: center;
+        align-items: center;
+        padding: 1rem 0;
       }
 
-      .logo svg {
-        filter: drop-shadow(0px 5px 10px black);
-        width: 90%;
-        height: auto;
-        margin: 0.5rem 0;
+      .logo-text {
+        font-size: 1.6rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        color: var(--accent-color);
+        text-transform: uppercase;
       }
 
       form {
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
         display: flex;
         flex-direction: column;
-        max-width: 500px;
+        max-width: 900px;
         margin: 0 auto;
         padding: 1.5rem 1.5rem 2.5rem 1.5rem;
-        border-radius: 24px;
-        box-shadow:
-          0 10px 36px 0 rgba(40, 170, 255, 0.11),
-          0 2px 8px 0 rgba(44, 70, 110, 0.08);
+        border-radius: 0;
       }
 
       label {
         font-size: 0.9rem;
         display: block;
         margin-top: 0.75rem;
+        color: var(--text-color);
       }
 
       input[type="text"],
@@ -244,10 +254,10 @@ const char index_html[] PROGMEM = R"rawliteral(
       select {
         width: 100%;
         padding: 0.75rem;
-        border: 1.5px solid rgba(180, 230, 255, 0.08);
-        border-radius: 8px;
-        background-color: rgba(225, 245, 255, 0.07);
-        color: #ffffff;
+        border: 1px solid var(--border-color);
+        border-radius: 0;
+        background-color: #ffffff;
+        color: var(--text-color);
         font-size: 1rem;
         appearance: none;
       }
@@ -256,7 +266,8 @@ const char index_html[] PROGMEM = R"rawliteral(
       input[type="text"]:disabled,
       input[type="number"]:disabled,
       input[type="date"]:disabled {
-        color: rgba(255, 255, 255, 0.25);
+        color: rgba(0, 0, 0, 0.25);
+        background-color: #fafafa;
       }
 
       input[type="submit"] {
@@ -264,20 +275,22 @@ const char index_html[] PROGMEM = R"rawliteral(
         color: white;
         font-size: 1rem;
         border: none;
-        border-radius: 999px;
+        border-radius: 0;
         cursor: pointer;
         transition: background-color 0.2s ease-in-out;
         padding: 0.9rem 1.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
       }
 
       input[type="submit"]:hover {
-        background-color: var(--accent-color);
-        filter: brightness(1.2);
+        background-color: var(--accent-hover);
       }
 
       input[type="time"]::-webkit-calendar-picker-indicator,
       input[type="date"]::-webkit-calendar-picker-indicator {
-        filter: invert(100%);
+        filter: none;
       }
 
       .toggle-switch input[type="checkbox"]:checked+.toggle-slider {
@@ -292,17 +305,16 @@ const char index_html[] PROGMEM = R"rawliteral(
       input:-webkit-autofill:hover,
       input:-webkit-autofill:focus,
       input:-webkit-autofill:active {
-
-        -webkit-text-fill-color: white !important;
-        -webkit-box-shadow: 0 0 0px 1000px rgba(225, 245, 255, 0.07) inset !important;
-        box-shadow: 0 0 0px 1000px rgba(225, 245, 255, 0.07) inset !important;
+        -webkit-text-fill-color: var(--text-color) !important;
+        -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+        box-shadow: 0 0 0px 1000px #ffffff inset !important;
         transition: background-color 5000000s ease-in-out 0s, color 5000000s ease-in-out 0s;
-        caret-color: white;
+        caret-color: var(--text-color);
       }
 
       input::placeholder,
       textarea::placeholder {
-        color: hwb(0 100% 0% / 0.39);
+        color: #999999;
         opacity: 1;
       }
 
@@ -326,18 +338,16 @@ const char index_html[] PROGMEM = R"rawliteral(
         font-size: 1rem;
         font-weight: 600;
         border: none;
-        border-radius: 999px;
+        border-radius: 0;
         cursor: pointer;
         text-align: center;
         align-self: center;
         width: fit-content;
-        transition: background 0.25s, transform 0.15s ease-in-out;
+        transition: background 0.2s ease-in-out;
       }
 
       .primary-button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 16px rgba(0, 122, 255, 0.35);
-        filter: brightness(1.2);
+        background-color: var(--accent-hover);
       }
 
       .primary-button:active {
@@ -365,26 +375,24 @@ const char index_html[] PROGMEM = R"rawliteral(
         align-items: center;
         z-index: 1000;
         background: rgba(0, 0, 0, 0.45);
-        z-index: 1000;
         transition: opacity 0.3s ease;
       }
 
       #savingModalContent {
-        background: var(--glass-bg);
-        border-radius: 24px;
-        box-shadow:
-          0 10px 36px 0 rgba(40, 170, 255, 0.11),
-          0 2px 8px 0 rgba(44, 70, 110, 0.08);
+        background: #ffffff;
+        border-radius: 0;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
         margin: 1.5rem;
         padding: 2rem 2.5rem;
         text-align: center;
-        border: 1px solid var(--glass-border);
-        backdrop-filter: blur(15px);
+        border: none;
+        border-top: 4px solid var(--accent-color);
+        color: var(--text-color);
       }
 
       .spinner {
-        border: 4px solid rgba(255, 255, 255, 0.2);
-        border-top: 4px solid #007aff;
+        border: 4px solid #e5e5e5;
+        border-top: 4px solid var(--accent-color);
         border-radius: 50%;
         width: 36px;
         height: 36px;
@@ -395,18 +403,23 @@ const char index_html[] PROGMEM = R"rawliteral(
       .footer {
         font-size: 0.8rem;
         text-align: center;
-        margin-top: 1rem;
-        opacity: 0.8;
+        margin-top: 1.5rem;
+        color: var(--text-muted);
       }
 
       a {
-        color: white;
+        color: var(--accent-color);
+      }
+
+      a:hover {
+        color: var(--accent-hover);
       }
 
       .small {
         display: block;
         font-size: 0.8rem;
         margin-top: 0.25rem;
+        color: var(--text-muted);
       }
 
       select option {
@@ -416,8 +429,8 @@ const char index_html[] PROGMEM = R"rawliteral(
       .geo-disabled {
         opacity: 0.5;
         background: none !important;
-        color: white !important;
-        border: 0.1rem white solid;
+        color: var(--text-color) !important;
+        border: 1px solid var(--border-color);
         cursor: not-allowed;
       }
 
@@ -485,11 +498,10 @@ const char index_html[] PROGMEM = R"rawliteral(
         position: relative;
         width: 48px;
         height: 24px;
-        border-radius: 999px;
-        transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-
-        background: rgba(255, 255, 255, 0.2);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+        border-radius: 0;
+        transition: all 0.18s ease;
+        background: #cccccc;
+        border: 1px solid var(--border-color);
       }
 
       .toggle-slider::before {
@@ -497,17 +509,17 @@ const char index_html[] PROGMEM = R"rawliteral(
         position: absolute;
         height: 18px;
         width: 18px;
-        left: 3px;
-        top: 3px;
-        border-radius: 50%;
+        left: 2px;
+        top: 2px;
+        border-radius: 0;
         background: #ffffff;
-        transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        transition: all 0.18s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
       }
 
       .toggle-switch input:checked+.toggle-slider {
-        background: var(--accent);
-        box-shadow: 0 0 10px rgba(0, 191, 255, 0.35);
+        background: var(--accent-color);
+        border-color: var(--accent-color);
       }
 
       .toggle-switch input:checked+.toggle-slider::before {
@@ -515,10 +527,8 @@ const char index_html[] PROGMEM = R"rawliteral(
       }
 
       .toggle-switch input:disabled+.toggle-slider {
-        opacity: 0.6;
+        opacity: 0.4;
         cursor: not-allowed;
-        border: none;
-        background: transparent;
       }
 
       .accent {
@@ -529,26 +539,31 @@ const char index_html[] PROGMEM = R"rawliteral(
         display: flex;
         align-items: center;
         cursor: pointer;
-        font-size: 1.1rem;
-        font-weight: normal;
+        font-size: 0.85rem;
+        font-weight: 700;
         background: none;
         border: none;
-        color: white;
+        color: var(--text-color);
         padding: 0;
         margin: 0;
         outline: none;
         gap: 0.5em;
         user-select: none;
-        margin-top: 6rem;
+        margin-top: 3rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding-left: 0.75rem;
+        border-left: 4px solid var(--accent-color);
       }
 
       #configForm>button.collapsible-toggle>span:nth-child(2) {
-        border-bottom: solid 1px white;
+        border-bottom: solid 1px var(--text-color);
       }
 
       .collapsible-toggle .icon-area {
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 0.3s ease;
         display: flex;
+        color: var(--accent-color);
       }
 
       .collapsible-toggle.open .icon-area {
@@ -558,8 +573,8 @@ const char index_html[] PROGMEM = R"rawliteral(
       .collapsible-content {
         overflow: hidden;
         height: none;
-        transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        color: #fff;
+        transition: height 0.3s ease;
+        color: var(--text-color);
         margin-bottom: 3rem;
       }
 
@@ -577,19 +592,19 @@ const char index_html[] PROGMEM = R"rawliteral(
 
       input[type="range"]::-webkit-slider-runnable-track {
         height: 6px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 6px;
+        background: #d4d4d4;
+        border-radius: 0;
       }
 
       input[type="range"]::-webkit-slider-thumb {
         -webkit-appearance: none;
         width: 18px;
         height: 18px;
-        border-radius: 50%;
+        border-radius: 0;
         background: var(--accent-color);
         border: none;
         margin-top: -6px;
-        box-shadow: 0 0 10px var(--accent-color);
+        box-shadow: none;
         transition: transform 0.15s ease;
       }
 
@@ -599,17 +614,17 @@ const char index_html[] PROGMEM = R"rawliteral(
 
       input[type="range"]::-moz-range-track {
         height: 6px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 6px;
+        background: #d4d4d4;
+        border-radius: 0;
       }
 
       input[type="range"]::-moz-range-thumb {
         width: 18px;
         height: 18px;
-        border-radius: 50%;
+        border-radius: 0;
         background: var(--accent-color);
         border: none;
-        box-shadow: 0 0 10px var(--accent-color);
+        box-shadow: none;
       }
 
       input[type="range"]:disabled {
@@ -618,26 +633,26 @@ const char index_html[] PROGMEM = R"rawliteral(
       }
 
       input[type="range"]:disabled::-webkit-slider-runnable-track {
-        background: rgba(255, 255, 255, 0.08);
+        background: #e5e5e5;
       }
 
       input[type="range"]:disabled::-moz-range-track {
-        background: rgba(255, 255, 255, 0.08);
+        background: #e5e5e5;
       }
 
       input[type="range"]:disabled::-webkit-slider-thumb {
-        background: #777;
+        background: #999;
         box-shadow: none;
         transform: none;
       }
 
       input[type="range"]:disabled::-moz-range-thumb {
-        background: #777;
+        background: #999;
         box-shadow: none;
       }
 
       .sub-collapsible {
-        color: inherit;
+        color: var(--text-color);
         width: fit-content;
         background: none;
         border: none;
@@ -648,7 +663,7 @@ const char index_html[] PROGMEM = R"rawliteral(
         font-weight: 600;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        opacity: 0.65;
+        opacity: 0.55;
         cursor: pointer;
         font-size: 0.9rem;
       }
@@ -664,10 +679,11 @@ const char index_html[] PROGMEM = R"rawliteral(
       }
 
       .sub-collapsible-content .content-wrapper {
-        border-radius: 12px;
+        border-radius: 0;
         padding: 1rem 2rem 2rem 2rem;
-        background: #ffffff08;
+        background: #fafafa;
         margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
       }
 
       .sub-collapsible[aria-expanded="true"]+.sub-collapsible-content {
@@ -679,8 +695,9 @@ const char index_html[] PROGMEM = R"rawliteral(
         padding-left: 0.4rem;
         line-height: 0;
         font-size: 1.1rem;
-        content: "›";
+        content: ">";
         transition: transform 0.25s ease;
+        color: var(--accent-color);
       }
 
       .sub-collapsible.open::after {
@@ -757,21 +774,24 @@ const char index_html[] PROGMEM = R"rawliteral(
       #geo-button,
       .primary-button.cmsg1,
       .primary-button.cmsg2 {
-        background-color: white;
-        color: #1f1f1f;
+        background-color: #ffffff;
+        color: var(--text-color);
         font-weight: normal;
         font-size: 0.75rem;
+        border: 1px solid var(--border-color);
       }
 
       #geo-button:hover,
       .primary-button.cmsg1:hover {
         background-color: var(--accent-color);
         color: white;
+        border-color: var(--accent-color);
       }
 
       .primary-button.cmsg2:hover {
-        background-color: #ff3c3c;
+        background-color: #dc2626;
         color: white;
+        border-color: #dc2626;
       }
 
       .device-info {
@@ -781,713 +801,1187 @@ const char index_html[] PROGMEM = R"rawliteral(
       hr {
         margin: 1.5rem 0;
         border: 0;
-        border-top: 1px solid var(--glass-border);
+        border-top: 1px solid var(--border-color);
       }
 
-      #hostnameInput{
+      #hostnameInput {
         min-width: calc(3ch + 1rem);
         text-align: center;
         padding: 0.5rem;
+      }
+
+      /* ------------------------------------------------------------------
+         Full-width desktop control surface
+         ------------------------------------------------------------------ */
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f3efe8;
+        color: var(--text-color);
+      }
+
+      #configForm {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: transparent;
+      }
+
+      .app-shell {
+        min-height: 100vh;
+        padding: 1rem;
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .shell-header {
+        position: fixed;
+        top: 0.9rem;
+        left: 0.9rem;
+        z-index: 40;
+        padding: 0;
+        background: transparent;
+        border: none;
+      }
+
+      .shell-copy,
+      .panel-copy {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      .shell-toolbar {
+        display: block;
+      }
+
+      .save-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        width: 42px;
+        min-width: 42px;
+        min-height: 42px;
+        padding: 0.6rem;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 0.84rem;
+        transition: width 0.18s ease, gap 0.18s ease, padding 0.18s ease,
+          background-color 0.18s ease;
+      }
+
+      .save-button .save-icon {
+        width: 14px;
+        height: 14px;
+        flex: 0 0 auto;
+      }
+
+      .save-button .save-label {
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-width 0.18s ease, opacity 0.18s ease;
+      }
+
+      .save-button:hover,
+      .save-button:focus-visible {
+        width: 124px;
+        gap: 0.5rem;
+        padding: 0.6rem 0.9rem;
+      }
+
+      .save-button:hover .save-label,
+      .save-button:focus-visible .save-label {
+        max-width: 72px;
+        opacity: 1;
+      }
+
+      .banner-note {
+        border: 1px solid #fdba74;
+        background: #fff7ed;
+        color: #9a3412;
+        padding: 0.9rem 1rem;
+        font-size: 0.86rem;
+      }
+
+      .workspace-grid {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .workspace-pane {
+        display: grid;
+        gap: 0.9rem;
+        align-content: start;
+      }
+
+      .panel {
+        display: grid;
+        gap: 0.75rem;
+        align-content: start;
+        padding: 0.95rem 1rem;
+        border: 1px solid var(--border-color);
+        background: #ffffff;
+      }
+
+      .panel-header {
+        display: grid;
+        gap: 0.2rem;
+      }
+
+      .panel h2 {
+        margin: 0;
+        padding: 0;
+        border: none;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        text-transform: none;
+        color: var(--text-color);
+      }
+
+      .panel label {
+        margin-top: 0.2rem;
+        font-size: 0.73rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #57534e;
+      }
+
+      .panel input[type="text"],
+      .panel input[type="time"],
+      .panel input[type="password"],
+      .panel input[type="date"],
+      .panel input[type="number"],
+      .panel select {
+        margin-top: 0.3rem;
+        padding: 0.72rem 0.78rem;
+        font-size: 0.96rem;
+        border: 1px solid #d6d3d1;
+        background: #fff;
+      }
+
+      .panel input[type="submit"],
+      .panel button,
+      .shell-header button {
+        min-height: 44px;
+      }
+
+      .form-row.two-col {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+      }
+
+      .field-grid {
+        display: grid;
+        gap: 0.7rem;
+      }
+
+      .inline-note {
+        margin-top: -0.1rem;
+      }
+
+      .small {
+        margin-top: 0.2rem;
+        text-align: left;
+        color: var(--text-muted);
+      }
+
+      .panel-actions,
+      .button-row,
+      .ota-stack {
+        display: grid;
+        gap: 0.6rem;
+      }
+
+      .button-row {
+        margin-top: 0;
+      }
+
+      .button-row .primary-button,
+      .panel-actions .primary-button,
+      .ota-stack .primary-button,
+      #scanBtn,
+      #geo-button {
+        width: 100%;
+        align-self: stretch;
+      }
+
+      .combo-container {
+        align-items: stretch;
+        min-height: 44px;
+      }
+
+      #scanBtn {
+        width: 92px;
+        font-size: 0.84rem;
+      }
+
+      #ssid {
+        min-width: 0;
+      }
+
+      .toggle-padding,
+      .device-info {
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      .toggle-row,
+      .toggle-row-lg,
+      .toggle-row-sm {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+      }
+
+      .label-text {
+        margin-right: 0;
+        font-size: 0.86rem;
+        font-weight: 600;
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--text-color);
+      }
+
+      #autoDimmingNote {
+        position: static;
+        padding-right: 0;
+        top: auto;
+        grid-column: 1 / -1;
+        margin-top: -0.25rem;
+      }
+
+      .panel-collapsible .sub-collapsible {
+        width: 100%;
+        padding: 0;
+        background: none;
+        color: var(--text-color);
+        border: none;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: none;
+        letter-spacing: 0.01em;
+        opacity: 1;
+      }
+
+      .panel-collapsible .sub-collapsible::after {
+        content: "+";
+        padding: 0;
+        font-size: 1.2rem;
+        line-height: 1;
+        color: var(--accent-color);
+        transform: none;
+      }
+
+      .panel-collapsible .sub-collapsible.open::after {
+        content: "-";
+        transform: none;
+      }
+
+      .panel-collapsible .sub-collapsible-content {
+        height: 0;
+        overflow: hidden;
+        transition: height 0.24s ease;
+      }
+
+      .panel-collapsible .content-wrapper {
+        margin-top: 0.8rem;
+        padding: 0;
+        border: none;
+        background: transparent;
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .status-grid {
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      .status-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.8rem;
+        align-items: center;
+        padding-bottom: 0.45rem;
+        border-bottom: 1px solid #ece7dd;
+        font-size: 0.9rem;
+      }
+
+      .status-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .status-row strong,
+      .status-row span:last-child {
+        text-align: right;
+      }
+
+      .host-line {
+        grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+      }
+
+      .host-line span:last-child {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      #hostnameInput {
+        min-width: 8ch;
+        width: 10ch;
+        text-align: center;
+        padding: 0.45rem 0.3rem;
+        margin: 0;
+      }
+
+      @media (min-width: 720px) {
+        .button-row,
+        .panel-actions,
+        .ota-stack {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .form-row.two-col,
+        .field-grid.two-col {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+      }
+
+      @media (min-width: 1180px) {
+        .app-shell {
+          min-height: 100vh;
+          padding: 0.9rem;
+          gap: 0.75rem;
+        }
+
+        .workspace-grid {
+          grid-template-columns: 1.08fr 1fr 1fr;
+          align-items: start;
+        }
+
+        .workspace-pane {
+          overflow: visible;
+          padding-right: 0;
+        }
+
+        .panel {
+          gap: 0.65rem;
+          padding: 0.85rem 0.9rem;
+        }
+
+        .wifi-panel-title {
+          margin-top: 3rem !important;
+        }
+
+        .shell-copy {
+          max-width: 52rem;
+        }
+
+        .panel-copy {
+          font-size: 0.82rem;
+        }
+
+        .panel label {
+          font-size: 0.68rem;
+        }
+
+        .panel input[type="text"],
+        .panel input[type="time"],
+        .panel input[type="password"],
+        .panel input[type="date"],
+        .panel input[type="number"],
+        .panel select {
+          padding: 0.62rem 0.7rem;
+          font-size: 0.88rem;
+        }
+
+        .panel button,
+        .panel input[type="submit"],
+        .shell-header button {
+          min-height: 40px;
+        }
+
+        .panel-collapsible .sub-collapsible {
+          cursor: default;
+          pointer-events: none;
+        }
+
+        .panel-collapsible .sub-collapsible::after {
+          content: none;
+        }
+
+        .panel-collapsible .sub-collapsible-content {
+          height: auto !important;
+          overflow: visible;
+        }
+      }
+
+      @media (hover: none), (pointer: coarse) {
+        .shell-header {
+          position: static;
+          top: auto;
+          left: auto;
+        }
+
+        .save-button {
+          width: auto;
+          gap: 0.5rem;
+          padding: 0.6rem 0.9rem;
+        }
+
+        .save-button .save-label {
+          max-width: 72px;
+          opacity: 1;
+        }
       }
     </style>
   </head>
   <body>
     <form id="configForm" onsubmit="submitConfig(event)">
-      <div class="logo">
-        <svg
-          width="450"
-          height="50"
-          viewBox="0 0 119.063 13.229"
-          xml:space="preserve"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            style="
-              fill: currentColor;
-              font-variation-settings:
-                &quot;wdth&quot; 87,
-                &quot;wght&quot; 700;
-              paint-order: markers fill stroke;
-            "
-            d="M.75 0a.75.75 0 1 0-.002 1.495A.75.75 0 0 0 .75 0m1.957 0a.75.75 0 1 0-.001 1.499.75.75 0 0 0 0-1.499m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m6.082 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m6.083 0a.75.75 0 1 0-.002 1.495A.75.75 0 0 0 24.654 0m1.957 0a.75.75 0 1 0-.001 1.499.75.75 0 0 0 0-1.499m1.956 0a.75.75 0 1 0 0 1.499.75.75 0 0 0 0-1.499m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m6.083 0a.749.749 0 1 0-.001 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m4.126 0a.75.75 0 1 0-.002 1.495A.75.75 0 0 0 48.558 0m29.987 0a.75.75 0 1 0-.002 1.495A.75.75 0 0 0 78.545 0M80.5 0a.75.75 0 1 0 0 1.499.75.75 0 0 0 0-1.499m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498M114.4 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498M.75 1.955a.75.75 0 1 0-.002 1.5.75.75 0 0 0 .002-1.5m11.952 0a.749.749 0 1 0-.002 1.498.749.749 0 0 0 .002-1.498m7.826 0a.749.749 0 1 0-.001 1.498.749.749 0 0 0 .001-1.498m4.126 0a.75.75 0 1 0-.002 1.5.75.75 0 0 0 .002-1.5m7.826 0a.749.749 0 1 0-.001 1.498.749.749 0 0 0 .001-1.498m8.039 0a.749.749 0 1 0-.002 1.498.749.749 0 0 0 .002-1.498m36.069 0a.749.749 0 1 0-.002 1.498.749.749 0 0 0 .002-1.498m7.826 0a.749.749 0 1 0-.002 1.498.749.749 0 0 0 .002-1.498m29.986 0a.749.749 0 1 0-.002 1.498.749.749 0 0 0 .002-1.498M.75 3.91a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5m11.952 0a.749.749 0 1 0-.001 1.498.749.749 0 0 0 0-1.498m11.952 0a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5m7.826 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m8.039 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m8.04 0a.75.75 0 1 0-.002 1.5.75.75 0 0 0 .001-1.5m4.125 0a.75.75 0 1 0-.001 1.5.75.75 0 0 0 0-1.5m1.957 0a.75.75 0 1 0-.001 1.5.75.75 0 0 0 0-1.5m1.956 0a.749.749 0 1 0-.001 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m8.039 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m6.083 0a.75.75 0 1 0-.001 1.5.75.75 0 0 0 0-1.5m13.908 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m6.083 0a.75.75 0 1 0-.001 1.5.75.75 0 0 0 0-1.5m1.956 0a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5m1.957 0a.75.75 0 1 0-.001 1.5.75.75 0 0 0 .001-1.5m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m4.125 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498M.75 5.866a.75.75 0 1 0-.002 1.499.75.75 0 0 0 .002-1.5m1.957 0a.749.749 0 1 0-.002 1.498.749.749 0 0 0 .002-1.498m1.956 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497m1.956 0a.749.749 0 1 0 0 1.497.75.75 0 1 0 0-1.498m8.039 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497m1.957 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497m1.956 0a.749.749 0 1 0-.001 1.497.749.749 0 0 0 .001-1.497m6.083 0a.75.75 0 1 0-.002 1.499.75.75 0 0 0 .002-1.5m1.957 0a.749.749 0 1 0-.002 1.498.749.749 0 0 0 .002-1.498m1.956 0a.749.749 0 1 0-.001 1.498.749.749 0 0 0 .001-1.498m1.956 0a.749.749 0 1 0 0 1.497.75.75 0 1 0 0-1.498m9.996 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497m8.04 0a.75.75 0 1 0-.003 1.499.75.75 0 0 0 .002-1.5m4.125 0a.749.749 0 1 0-.002 1.498.749.749 0 0 0 .002-1.498m3.913 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497m3.913 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497m4.125 0a.749.749 0 1 0-.001 1.497.749.749 0 0 0 .001-1.497m7.827 0a.749.749 0 1 0-.001 1.497.749.749 0 0 0 .001-1.497m4.126 0a.749.749 0 1 0-.002 1.498.749.749 0 0 0 .002-1.498m11.951 0a.749.749 0 1 0-.001 1.497.749.749 0 0 0 .001-1.497m7.827 0a.749.749 0 1 0-.001 1.497.749.749 0 0 0 .001-1.497m4.126 0a.749.749 0 1 0-.002 1.498.749.749 0 0 0 .002-1.498m13.908 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497M.75 7.82a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5m19.778 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m4.126 0a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5m15.865 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m8.04 0a.75.75 0 1 0-.002 1.5.75.75 0 0 0 .001-1.5m4.125 0a.75.75 0 1 0-.001 1.499.75.75 0 0 0 0-1.5m3.913 0a.749.749 0 1 0-.001 1.498.749.749 0 0 0 0-1.498m3.913 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m4.125 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m4.126 0a.75.75 0 1 0-.001 1.499.75.75 0 0 0 0-1.5m11.951 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m7.827 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m6.083 0a.75.75 0 1 0-.001 1.5.75.75 0 0 0 0-1.5m1.956 0a.75.75 0 1 0 0 1.499.75.75 0 0 0 0-1.5m1.957 0a.75.75 0 1 0-.001 1.5.75.75 0 0 0 .001-1.5m8.038 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498M.75 9.776a.75.75 0 1 0-.002 1.499.75.75 0 0 0 .002-1.499m11.952 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497m7.826 0a.749.749 0 1 0-.001 1.497.749.749 0 0 0 .001-1.497m4.126 0a.75.75 0 1 0-.002 1.499.75.75 0 0 0 .002-1.499m15.865 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497m8.04 0a.75.75 0 1 0-.003 1.499.75.75 0 0 0 .002-1.499m4.125 0a.749.749 0 1 0-.002 1.498.749.749 0 0 0 .002-1.498m3.913 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497m3.913 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497m4.125 0a.749.749 0 1 0-.001 1.497.749.749 0 0 0 .001-1.497m11.953 0a.749.749 0 1 0-.002 1.498.749.749 0 0 0 .002-1.498m7.826 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497m4.125 0a.749.749 0 1 0-.001 1.497.749.749 0 0 0 .001-1.497m5.87 0a.749.749 0 1 0-.001 1.497.749.749 0 0 0 .001-1.497m1.957 0a.749.749 0 1 0-.001 1.497.749.749 0 0 0 .001-1.497m11.952 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497m6.082 0a.749.749 0 1 0-.002 1.497.749.749 0 0 0 .002-1.497M.75 11.731a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5m1.957 0a.75.75 0 1 0-.001 1.499.75.75 0 0 0 0-1.499m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m6.082 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m6.083 0a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5m15.865 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m8.04 0a.75.75 0 1 0-.002 1.5.75.75 0 0 0 .001-1.5m4.125 0a.75.75 0 1 0-.001 1.499.75.75 0 0 0 0-1.499m3.913 0a.749.749 0 1 0-.001 1.498.749.749 0 0 0 0-1.498m3.913 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m6.082 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m8.04 0a.75.75 0 1 0-.001 1.5.75.75 0 0 0 0-1.5m1.956 0a.75.75 0 1 0 0 1.499.75.75 0 0 0 0-1.499m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m8.039 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.957 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m3.913 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m4.126 0a.75.75 0 1 0-.001 1.499.75.75 0 0 0 0-1.499m1.957 0a.75.75 0 1 0-.001 1.5.75.75 0 0 0 0-1.5m1.956 0a.75.75 0 1 0 0 1.499.75.75 0 0 0 0-1.499m1.957 0a.75.75 0 1 0-.001 1.5.75.75 0 0 0 .001-1.5m9.995 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498m1.956 0a.749.749 0 1 0 0 1.498.749.749 0 0 0 0-1.498"
-          />
-        </svg>
-      </div>
-      <h2>WiFi Settings</h2>
-      <label for="ssid">SSID</label>
-      <div class="ssid-wrapper">
-        <div class="combo-container">
-          <input type="text" id="ssid" name="ssid" required />
-          <button type="button" id="arrowBtn" title="Show scanned" disabled>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="none"
-              viewBox="0 0 0.48 0.48"
-            >
-              <g style="opacity: 1">
+      <div class="app-shell">
+        <header class="shell-header">
+          <div class="shell-toolbar">
+            <button type="submit" class="primary-button save-button">
+              <svg
+                class="save-icon"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
                 <path
-                  d="M-24.679 12.619h.48v.48h-.48z"
-                  style="
-                    font-variation-settings:
-                      &quot;wdth&quot; 87,
-                      &quot;wght&quot; 700;
-                    fill: none;
-                    stroke-width: 0.0127174;
-                    paint-order: markers fill stroke;
-                  "
-                  transform="translate(24.679 -12.62)"
+                  d="M2 2H11L14 5V14H2V2Z"
+                  stroke="currentColor"
+                  stroke-width="1.4"
                 />
-                <path
-                  d="M-24.661 12.732a.06.06 0 0 0 0 .085l.162.162a.086.086 0 0 0 .12 0l.163-.162a.06.06 0 0 0 0-.085.06.06 0 0 0-.085 0l-.138.138-.137-.138a.06.06 0 0 0-.085 0z"
-                  style="
-                    baseline-shift: baseline;
-                    display: inline;
-                    overflow: visible;
-                    vector-effect: none;
-                    fill: #fff;
-                    stroke-width: 0.0600023;
-                    stroke-linecap: round;
-                    stroke-linejoin: round;
-                    enable-background: accumulate;
-                    stop-color: #000;
-                    stop-opacity: 1;
-                  "
-                  transform="translate(24.679 -12.62)"
-                />
-              </g>
-            </svg>
-          </button>
-          <button type="button" class="primary-button" id="scanBtn">
-            Scan
-          </button>
-        </div>
-        <div id="ssidList"></div>
-      </div>
-      <label for="password">Password</label>
-      <div style="position: relative">
-        <input type="password" id="password" name="password" required />
-        <label class="small">
-          <input
-            type="checkbox"
-            id="togglePassword"
-            style="margin-right: 0.3rem"
-          />
-          Show Password
-        </label>
-      </div>
-
-      <h2>Time & Region</h2>
-      <label for="timeZone">Time Zone</label>
-      <select id="timeZone" name="timeZone" required>
-        <option value="" disabled selected>Select your time zone</option>
-        <option value="Africa/Cairo">Africa/Cairo</option>
-        <option value="Africa/Casablanca">Africa/Casablanca</option>
-        <option value="Africa/Johannesburg">Africa/Johannesburg</option>
-        <option value="America/Anchorage">America/Anchorage</option>
-        <option value="America/Argentina/Buenos_Aires">
-          America/Argentina/Buenos_Aires
-        </option>
-        <option value="America/Chicago">America/Chicago</option>
-        <option value="America/Denver">America/Denver</option>
-        <option value="America/Guatemala">America/Guatemala</option>
-        <option value="America/Halifax">America/Halifax</option>
-        <option value="America/Los_Angeles">America/Los_Angeles</option>
-        <option value="America/Mexico_City">America/Mexico_City</option>
-        <option value="America/New_York">America/New_York</option>
-        <option value="America/Phoenix">America/Phoenix</option>
-        <option value="America/Santiago">America/Santiago</option>
-        <option value="America/Sao_Paulo">America/Sao_Paulo</option>
-        <option value="America/St_Johns">America/St_Johns</option>
-        <option value="America/Toronto">America/Toronto</option>
-        <option value="America/Vancouver">America/Vancouver</option>
-        <option value="Asia/Almaty">Asia/Almaty</option>
-        <option value="Asia/Amman">Asia/Amman</option>
-        <option value="Asia/Baghdad">Asia/Baghdad</option>
-        <option value="Asia/Bangkok">Asia/Bangkok</option>
-        <option value="Asia/Beirut">Asia/Beirut</option>
-        <option value="Asia/Dhaka">Asia/Dhaka</option>
-        <option value="Asia/Dubai">Asia/Dubai</option>
-        <option value="Asia/Ho_Chi_Minh">Asia/Ho_Chi_Minh</option>
-        <option value="Asia/Hong_Kong">Asia/Hong_Kong</option>
-        <option value="Asia/Jakarta">Asia/Jakarta</option>
-        <option value="Asia/Jerusalem">Asia/Jerusalem</option>
-        <option value="Asia/Karachi">Asia/Karachi</option>
-        <option value="Asia/Kathmandu">Asia/Kathmandu</option>
-        <option value="Asia/Kolkata">Asia/Kolkata</option>
-        <option value="Asia/Kuala_Lumpur">Asia/Kuala_Lumpur</option>
-        <option value="Asia/Manila">Asia/Manila</option>
-        <option value="Asia/Seoul">Asia/Seoul</option>
-        <option value="Asia/Shanghai">Asia/Shanghai</option>
-        <option value="Asia/Singapore">Asia/Singapore</option>
-        <option value="Asia/Taipei">Asia/Taipei</option>
-        <option value="Asia/Tashkent">Asia/Tashkent</option>
-        <option value="Asia/Tokyo">Asia/Tokyo</option>
-        <option value="Asia/Ulaanbaatar">Asia/Ulaanbaatar</option>
-        <option value="Asia/Yekaterinburg">Asia/Yekaterinburg</option>
-        <option value="Atlantic/Azores">Atlantic/Azores</option>
-        <option value="Atlantic/Azores">Atlantic/Canary</option>
-        <option value="Atlantic/Reykjavik">Atlantic/Reykjavik</option>
-        <option value="Australia/Adelaide">Australia/Adelaide</option>
-        <option value="Australia/Brisbane">Australia/Brisbane</option>
-        <option value="Australia/Darwin">Australia/Darwin</option>
-        <option value="Australia/Hobart">Australia/Hobart</option>
-        <option value="Australia/Melbourne">Australia/Melbourne</option>
-        <option value="Australia/Perth">Australia/Perth</option>
-        <option value="Australia/Sydney">Australia/Sydney</option>
-        <option value="Europe/Amsterdam">Europe/Amsterdam</option>
-        <option value="Europe/Athens">Europe/Athens</option>
-        <option value="Europe/Belgrade">Europe/Belgrade</option>
-        <option value="Europe/Berlin">Europe/Berlin</option>
-        <option value="Europe/Brussels">Europe/Brussels</option>
-        <option value="Europe/Bucharest">Europe/Bucharest</option>
-        <option value="Europe/Copenhagen">Europe/Copenhagen</option>
-        <option value="Europe/Dublin">Europe/Dublin</option>
-        <option value="Europe/Helsinki">Europe/Helsinki</option>
-        <option value="Europe/Istanbul">Europe/Istanbul</option>
-        <option value="Europe/Kiev">Europe/Kiev</option>
-        <option value="Europe/Lisbon">Europe/Lisbon</option>
-        <option value="Europe/London">Europe/London</option>
-        <option value="Europe/Madrid">Europe/Madrid</option>
-        <option value="Europe/Moscow">Europe/Moscow</option>
-        <option value="Europe/Oslo">Europe/Oslo</option>
-        <option value="Europe/Paris">Europe/Paris</option>
-        <option value="Europe/Prague">Europe/Prague</option>
-        <option value="Europe/Rome">Europe/Rome</option>
-        <option value="Europe/Stockholm">Europe/Stockholm</option>
-        <option value="Europe/Warsaw">Europe/Warsaw</option>
-        <option value="Pacific/Auckland">Pacific/Auckland</option>
-        <option value="Pacific/Chatham">Pacific/Chatham</option>
-        <option value="Pacific/Fiji">Pacific/Fiji</option>
-        <option value="Pacific/Guam">Pacific/Guam</option>
-        <option value="Pacific/Honolulu">Pacific/Honolulu</option>
-        <option value="Pacific/Port_Moresby">Pacific/Port_Moresby</option>
-        <option value="Pacific/Tahiti">Pacific/Tahiti</option>
-        <option value="UTC">UTC</option>
-        <option value="Etc/GMT+1">Etc/GMT+1</option>
-        <option value="Etc/GMT-1">Etc/GMT-1</option>
-      </select>
-
-      <label for="language">Language (Day & Weather)</label>
-      <select id="language" name="language" onchange="setLanguage(this.value)">
-        <option value="" disabled selected>Select language</option>
-        <option value="af">Afrikaans</option>
-        <option value="hr">Croatian</option>
-        <option value="cs">Czech</option>
-        <option value="da">Danish</option>
-        <option value="nl">Dutch</option>
-        <option value="en">English</option>
-        <option value="eo">Esperanto</option>
-        <option value="et">Estonian</option>
-        <option value="fi">Finnish</option>
-        <option value="fr">French</option>
-        <option value="de">German</option>
-        <option value="hu">Hungarian</option>
-        <option value="it">Italian</option>
-        <option value="ga">Irish</option>
-        <option value="ja">Japanese</option>
-        <option value="lv">Latvian</option>
-        <option value="lt">Lithuanian</option>
-        <option value="no">Norwegian</option>
-        <option value="pl">Polish</option>
-        <option value="pt">Portuguese</option>
-        <option value="ro">Romanian</option>
-        <option value="ru">Russian</option>
-        <option value="sr">Serbian</option>
-        <option value="sk">Slovak</option>
-        <option value="sl">Slovenian</option>
-        <option value="es">Spanish</option>
-        <option value="sv">Swedish</option>
-        <option value="sw">Swahili</option>
-        <option value="tr">Turkish</option>
-      </select>
-
-      <div class="form-row two-col">
-        <div>
-          <label for="clockDuration">Clock Duration</label>
-          <input
-            type="number"
-            id="clockDuration"
-            name="clockDuration"
-            min="1"
-            required
-          />
-          <label class="small">(Seconds)</label>
-        </div>
-        <div>
-          <label for="weatherDuration">Weather Duration</label>
-          <input
-            type="number"
-            id="weatherDuration"
-            name="weatherDuration"
-            min="1"
-            required
-          />
-          <label class="small">(Seconds)</label>
-        </div>
-      </div>
-
-      <h2>Weather Settings</h2>
-      <label for="openWeatherApiKey">OpenWeather API Key</label>
-      <input
-        type="text"
-        id="openWeatherApiKey"
-        name="openWeatherApiKey"
-        placeholder="ADD-YOUR-API-KEY-32-CHARACTERS"
-      />
-      <div class="small">
-        Required to fetch weather data.
-        <a href="https://home.openweathermap.org/users/sign_up" target="_blank"
-          >Get your API key here</a
-        >.
-      </div>
-
-      <label>Location</label>
-      <div class="form-row two-col">
-        <input
-          type="text"
-          id="openWeatherCity"
-          name="openWeatherCity"
-          placeholder="City / Zip / Lat."
-        />
-        <input
-          type="text"
-          id="openWeatherCountry"
-          name="openWeatherCountry"
-          placeholder="Country Code / Long."
-        />
-      </div>
-
-      <div class="small">
-        <strong>Location format examples:</strong> City, Country Code - Osaka,
-        JP | ZIP, Country Code - 94040, US | Latitude, Longitude - 34.6937,
-        135.5023
-      </div>
-
-      <button
-        type="button"
-        class="primary-button"
-        id="geo-button"
-        onclick="getLocation()"
-        style="margin-top: 1rem"
-      >
-        Get My Location
-      </button>
-
-      <div class="form-group">
-        <h2>Custom Message</h2>
-        <input
-          id="customMessage"
-          name="customMessage"
-          type="text"
-          maxlength="120"
-          placeholder="ENTER MESSAGE"
-          title="Allowed: A-Z, 0-9, space, and symbols : ! ' . , _ + % / ? [ ] ° # @ ^ ~ * = < > ( ) { } \ - & $ ¥ |"
-        />
-        <div class="small">
-           <strong>Use brackets for special content:</strong> [123] for Big Numbers, icons like [CAR] or [MAIL], [TIMER 5M] for a 5-minute timer. Full icon list <a href="https://github.com/mfactory-osaka/ESPTimeCast#-using-mfactoryfonth-icons-v123" target="_blank">here</a>.
-        </div>
-      </div>
-      <div class="button-row">
-        <button
-          type="button"
-          class="primary-button cmsg2"
-          onclick="clearCustomMessage()"
-        >
-          Clear Message
-        </button>
-        <button
-          type="button"
-          class="primary-button cmsg1"
-          onclick="sendCustomMessage()"
-        >
-          Send Message
-        </button>
-      </div>
-
-      <div class="geo-note" style="display: none">
-        <br />
-        <span class="small"
-          ><strong>Note:</strong> External links, Custom Message and the "Get My
-          Location" button require internet access.</span
-        >
-        <span class="small"
-          >They won't work while the device is in AP Mode - connect to Wi-Fi
-          first.</span
-        >
-      </div>
-
-      <button type="button" class="collapsible-toggle" aria-expanded="false">
-        <span class="icon-area" aria-hidden="true">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 16 16"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-          >
-            <path
-              fill="currentColor"
-              d="M16,9V7l-2.259-0.753c-0.113-0.372-0.262-0.728-0.441-1.066l1.066-2.131L12.95,1.634L10.819,2.7 c-0.338-0.178-0.694-0.325-1.066-0.441L9,0H7L6.247,2.259C5.875,2.372,5.519,2.522,5.181,2.7L3.05,1.638L1.638,3.05l1.066,2.131 C2.522,5.519,2.375,5.875,2.259,6.247L0,7v2l2.259,0.753c0.112,0.372,0.263,0.728,0.441,1.066L1.634,12.95l1.416,1.416L5.181,13.3 c0.338,0.178,0.694,0.328,1.066,0.441L7,16h2l0.753-2.259c0.372-0.113,0.728-0.262,1.066-0.441l2.131,1.066l1.416-1.416L13.3,10.819 c0.178-0.337,0.328-0.694,0.344-1.066L16,9z M8,11c-1.656,0-3-1.344-3-3s1.344-3,3-3s3,1.344,3,3S9.656,11,8,11z"
-            />
-          </svg>
-        </span>
-        <span>Advanced Settings</span>
-      </button>
-      <div class="collapsible-content" aria-hidden="true">
-        <button type="button" class="sub-collapsible active" aria-expanded="false">
-          Time & Date
-        </button>
-        <div class="sub-collapsible-content" aria-hidden="true">
-          <div class="content-wrapper">
-            <label>Primary NTP Server:</label>
-            <input
-              type="text"
-              name="ntpServer1"
-              id="ntpServer1"
-              placeholder="Enter NTP address"
-            />
-
-            <label>Secondary NTP Server:</label>
-            <input
-              type="text"
-              name="ntpServer2"
-              id="ntpServer2"
-              placeholder="Enter NTP address"
-            />
-
-            <div class="toggles toggle-padding">
-              <label class="toggle-row-lg">
-                <span class="label-text">Show Day Of The Week:</span>
-                <span class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    id="showDayOfWeek"
-                    name="showDayOfWeek"
-                    onchange="setShowDayOfWeek(this.checked)"
-                  />
-                  <span class="toggle-slider"></span>
-                </span>
-              </label>
-
-              <label class="toggle-row-lg">
-                <span class="label-text">Animated Seconds:</span>
-                <span class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    id="colonBlinkEnabled"
-                    name="colonBlinkEnabled"
-                    onchange="setColonBlink(this.checked)"
-                  />
-                  <span class="toggle-slider"></span>
-                </span>
-              </label>
-
-              <label class="toggle-row-lg">
-                <span class="label-text">Show Date:</span>
-                <span class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    id="showDate"
-                    name="showDate"
-                    onchange="setShowDate(this.checked)"
-                  />
-                  <span class="toggle-slider"></span>
-                </span>
-              </label>
-
-              <label class="toggle-row-lg">
-                <span class="label-text">Display 12-hour Clock:</span>
-                <span class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    id="twelveHourToggle"
-                    name="twelveHourToggle"
-                    onchange="setTwelveHour(this.checked)"
-                  />
-                  <span class="toggle-slider"></span>
-                </span>
-              </label>
-            </div>
+                <path d="M5 2H10V6H5V2Z" fill="currentColor" />
+                <path d="M5 10H11" stroke="currentColor" stroke-width="1.4" />
+              </svg>
+              <span class="save-label">Save</span>
+            </button>
           </div>
+        </header>
+
+        <div class="geo-note banner-note" style="display: none">
+          <strong>AP mode:</strong> internet-only actions like geolocation, message send,
+          and external links stay disabled until the device joins Wi-Fi.
         </div>
 
-        <button type="button" class="sub-collapsible active" aria-expanded="false">
-          Weather
-        </button>
-        <div class="sub-collapsible-content" aria-hidden="true">
-          <div class="content-wrapper">
-            <div class="toggle-padding">
-              <label class="toggle-row-lg">
-                <span class="label-text">Use Imperial Units (°F):</span>
-                <span class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    id="weatherUnits"
-                    name="weatherUnits"
-                    onchange="setWeatherUnits(this.checked)"
-                  />
-                  <span class="toggle-slider"></span>
-                </span>
-              </label>
+        <div class="workspace-grid">
+          <div class="workspace-pane">
+            <section class="panel">
+              <div class="panel-header">
+                <h2 class="wifi-panel-title">WiFi Settings</h2>
+                <p class="panel-copy">Scan nearby networks, then store credentials.</p>
+              </div>
 
-              <label class="toggle-row-lg">
-                <span class="label-text">Show Humidity:</span>
-                <span class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    id="showHumidity"
-                    name="showHumidity"
-                    onchange="setShowHumidity(this.checked)"
-                  />
-                  <span class="toggle-slider"></span>
-                </span>
-              </label>
-
-              <label class="toggle-row-lg">
-                <span class="label-text">Show Weather Description:</span>
-                <span class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    id="showWeatherDescription"
-                    name="showWeatherDescription"
-                    onchange="setShowWeatherDescription(this.checked)"
-                  />
-                  <span class="toggle-slider"></span>
-                </span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <button type="button" class="sub-collapsible active" aria-expanded="false">
-          Display & Brightness
-        </button>
-        <div class="sub-collapsible-content" aria-hidden="true">
-          <div class="content-wrapper">
-            <div class="toggle-padding">
-              <label> Brightness: <span id="brightnessValue">10</span> </label>
-              <input
-                class="range-full"
-                type="range"
-                min="-1"
-                max="15"
-                name="brightness"
-                id="brightnessSlider"
-                value="10"
-                oninput="
-                  brightnessValue.textContent =
-                    this.value == -1 ? 'Off' : this.value;
-                  setBrightnessLive(this.value);
-                "
-              />
-
-              <label class="toggle-row-lg">
-                <span class="label-text">Flip Display (180°):</span>
-                <span class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    id="flipDisplay"
-                    name="flipDisplay"
-                    onchange="setFlipDisplay(this.checked)"
-                  />
-                  <span class="toggle-slider"></span>
-                </span>
-              </label>
-
-              <label class="toggle-row-lg">
-                <span class="label-text">Automatic Dimming:</span>
-                <span class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    id="autoDimmingEnabled"
-                    name="autoDimmingEnabled"
-                  />
-                  <span class="toggle-slider"></span>
-                </span>
-                <div id="autoDimmingNote" class="small">
-                  Requires a valid OpenWeather API key.
+              <label for="ssid">SSID</label>
+              <div class="ssid-wrapper">
+                <div class="combo-container">
+                  <input type="text" id="ssid" name="ssid" required />
+                  <button type="button" id="arrowBtn" title="Show scanned" disabled>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="none"
+                      viewBox="0 0 0.48 0.48"
+                    >
+                      <g style="opacity: 1">
+                        <path
+                          d="M-24.679 12.619h.48v.48h-.48z"
+                          style="
+                            font-variation-settings:
+                              &quot;wdth&quot; 87,
+                              &quot;wght&quot; 700;
+                            fill: none;
+                            stroke-width: 0.0127174;
+                            paint-order: markers fill stroke;
+                          "
+                          transform="translate(24.679 -12.62)"
+                        />
+                        <path
+                          d="M-24.661 12.732a.06.06 0 0 0 0 .085l.162.162a.086.086 0 0 0 .12 0l.163-.162a.06.06 0 0 0 0-.085.06.06 0 0 0-.085 0l-.138.138-.137-.138a.06.06 0 0 0-.085 0z"
+                          style="
+                            baseline-shift: baseline;
+                            display: inline;
+                            overflow: visible;
+                            vector-effect: none;
+                            fill: #1a1a1a;
+                            stroke-width: 0.0600023;
+                            stroke-linecap: round;
+                            stroke-linejoin: round;
+                            enable-background: accumulate;
+                            stop-color: #000;
+                            stop-opacity: 1;
+                          "
+                          transform="translate(24.679 -12.62)"
+                        />
+                      </g>
+                    </svg>
+                  </button>
+                  <button type="button" class="primary-button" id="scanBtn">
+                    Scan
+                  </button>
                 </div>
-              </label>
+                <div id="ssidList"></div>
+              </div>
 
-              <label class="toggle-row-lg">
-                <span class="label-text">Custom Dimming:</span>
-                <span class="toggle-switch">
+              <label for="password">Password</label>
+              <div>
+                <input type="password" id="password" name="password" required />
+                <label class="small">
                   <input
                     type="checkbox"
-                    id="dimmingEnabled"
-                    name="dimmingEnabled"
+                    id="togglePassword"
+                    style="margin-right: 0.3rem"
                   />
-                  <span class="toggle-slider"></span>
-                </span>
-              </label>
+                  Show password
+                </label>
+              </div>
+            </section>
 
-              <label class="toggle-row-lg">
-                <span class="label-text">Clock-Only Mode When Dimmed:</span>
-                <span class="toggle-switch">
-                  <input type="checkbox" id="clockOnlyDuringDimming" />
-                  <span class="toggle-slider"></span>
-                </span>
-              </label>
-            </div>
-
-            <div class="form-row two-col">
-              <div>
-                <label for="dimStartTime">Start Time:</label>
-                <input type="time" id="dimStartTime" value="18:00" />
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Time & Region</h2>
+                <p class="panel-copy">Timezone, language, and cycle timing.</p>
               </div>
 
-              <div>
-                <label for="dimEndTime">End Time:</label>
-                <input type="time" id="dimEndTime" value="08:00" />
+              <div class="form-row two-col">
+                <div>
+                  <label for="timeZone">Time Zone</label>
+                  <select id="timeZone" name="timeZone" required>
+                    <option value="" disabled selected>Select your time zone</option>
+                    <option value="Africa/Cairo">Africa/Cairo</option>
+                    <option value="Africa/Casablanca">Africa/Casablanca</option>
+                    <option value="Africa/Johannesburg">Africa/Johannesburg</option>
+                    <option value="America/Anchorage">America/Anchorage</option>
+                    <option value="America/Argentina/Buenos_Aires">
+                      America/Argentina/Buenos_Aires
+                    </option>
+                    <option value="America/Chicago">America/Chicago</option>
+                    <option value="America/Denver">America/Denver</option>
+                    <option value="America/Guatemala">America/Guatemala</option>
+                    <option value="America/Halifax">America/Halifax</option>
+                    <option value="America/Los_Angeles">America/Los_Angeles</option>
+                    <option value="America/Mexico_City">America/Mexico_City</option>
+                    <option value="America/New_York">America/New_York</option>
+                    <option value="America/Phoenix">America/Phoenix</option>
+                    <option value="America/Santiago">America/Santiago</option>
+                    <option value="America/Sao_Paulo">America/Sao_Paulo</option>
+                    <option value="America/St_Johns">America/St_Johns</option>
+                    <option value="America/Toronto">America/Toronto</option>
+                    <option value="America/Vancouver">America/Vancouver</option>
+                    <option value="Asia/Almaty">Asia/Almaty</option>
+                    <option value="Asia/Amman">Asia/Amman</option>
+                    <option value="Asia/Baghdad">Asia/Baghdad</option>
+                    <option value="Asia/Bangkok">Asia/Bangkok</option>
+                    <option value="Asia/Beirut">Asia/Beirut</option>
+                    <option value="Asia/Dhaka">Asia/Dhaka</option>
+                    <option value="Asia/Dubai">Asia/Dubai</option>
+                    <option value="Asia/Ho_Chi_Minh">Asia/Ho_Chi_Minh</option>
+                    <option value="Asia/Hong_Kong">Asia/Hong_Kong</option>
+                    <option value="Asia/Jakarta">Asia/Jakarta</option>
+                    <option value="Asia/Jerusalem">Asia/Jerusalem</option>
+                    <option value="Asia/Karachi">Asia/Karachi</option>
+                    <option value="Asia/Kathmandu">Asia/Kathmandu</option>
+                    <option value="Asia/Kolkata">Asia/Kolkata</option>
+                    <option value="Asia/Kuala_Lumpur">Asia/Kuala_Lumpur</option>
+                    <option value="Asia/Manila">Asia/Manila</option>
+                    <option value="Asia/Seoul">Asia/Seoul</option>
+                    <option value="Asia/Shanghai">Asia/Shanghai</option>
+                    <option value="Asia/Singapore">Asia/Singapore</option>
+                    <option value="Asia/Taipei">Asia/Taipei</option>
+                    <option value="Asia/Tashkent">Asia/Tashkent</option>
+                    <option value="Asia/Tokyo">Asia/Tokyo</option>
+                    <option value="Asia/Ulaanbaatar">Asia/Ulaanbaatar</option>
+                    <option value="Asia/Yekaterinburg">Asia/Yekaterinburg</option>
+                    <option value="Atlantic/Azores">Atlantic/Azores</option>
+                    <option value="Atlantic/Azores">Atlantic/Canary</option>
+                    <option value="Atlantic/Reykjavik">Atlantic/Reykjavik</option>
+                    <option value="Australia/Adelaide">Australia/Adelaide</option>
+                    <option value="Australia/Brisbane">Australia/Brisbane</option>
+                    <option value="Australia/Darwin">Australia/Darwin</option>
+                    <option value="Australia/Hobart">Australia/Hobart</option>
+                    <option value="Australia/Melbourne">Australia/Melbourne</option>
+                    <option value="Australia/Perth">Australia/Perth</option>
+                    <option value="Australia/Sydney">Australia/Sydney</option>
+                    <option value="Europe/Amsterdam">Europe/Amsterdam</option>
+                    <option value="Europe/Athens">Europe/Athens</option>
+                    <option value="Europe/Belgrade">Europe/Belgrade</option>
+                    <option value="Europe/Berlin">Europe/Berlin</option>
+                    <option value="Europe/Brussels">Europe/Brussels</option>
+                    <option value="Europe/Bucharest">Europe/Bucharest</option>
+                    <option value="Europe/Copenhagen">Europe/Copenhagen</option>
+                    <option value="Europe/Dublin">Europe/Dublin</option>
+                    <option value="Europe/Helsinki">Europe/Helsinki</option>
+                    <option value="Europe/Istanbul">Europe/Istanbul</option>
+                    <option value="Europe/Kiev">Europe/Kiev</option>
+                    <option value="Europe/Lisbon">Europe/Lisbon</option>
+                    <option value="Europe/London">Europe/London</option>
+                    <option value="Europe/Madrid">Europe/Madrid</option>
+                    <option value="Europe/Moscow">Europe/Moscow</option>
+                    <option value="Europe/Oslo">Europe/Oslo</option>
+                    <option value="Europe/Paris">Europe/Paris</option>
+                    <option value="Europe/Prague">Europe/Prague</option>
+                    <option value="Europe/Rome">Europe/Rome</option>
+                    <option value="Europe/Stockholm">Europe/Stockholm</option>
+                    <option value="Europe/Warsaw">Europe/Warsaw</option>
+                    <option value="Pacific/Auckland">Pacific/Auckland</option>
+                    <option value="Pacific/Chatham">Pacific/Chatham</option>
+                    <option value="Pacific/Fiji">Pacific/Fiji</option>
+                    <option value="Pacific/Guam">Pacific/Guam</option>
+                    <option value="Pacific/Honolulu">Pacific/Honolulu</option>
+                    <option value="Pacific/Port_Moresby">Pacific/Port_Moresby</option>
+                    <option value="Pacific/Tahiti">Pacific/Tahiti</option>
+                    <option value="UTC">UTC</option>
+                    <option value="Etc/GMT+1">Etc/GMT+1</option>
+                    <option value="Etc/GMT-1">Etc/GMT-1</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="language">Language (Day & Weather)</label>
+                  <select id="language" name="language" onchange="setLanguage(this.value)">
+                    <option value="" disabled selected>Select language</option>
+                    <option value="af">Afrikaans</option>
+                    <option value="hr">Croatian</option>
+                    <option value="cs">Czech</option>
+                    <option value="da">Danish</option>
+                    <option value="nl">Dutch</option>
+                    <option value="en">English</option>
+                    <option value="eo">Esperanto</option>
+                    <option value="et">Estonian</option>
+                    <option value="fi">Finnish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="hu">Hungarian</option>
+                    <option value="it">Italian</option>
+                    <option value="ga">Irish</option>
+                    <option value="ja">Japanese</option>
+                    <option value="lv">Latvian</option>
+                    <option value="lt">Lithuanian</option>
+                    <option value="no">Norwegian</option>
+                    <option value="pl">Polish</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ro">Romanian</option>
+                    <option value="ru">Russian</option>
+                    <option value="sr">Serbian</option>
+                    <option value="sk">Slovak</option>
+                    <option value="sl">Slovenian</option>
+                    <option value="es">Spanish</option>
+                    <option value="sv">Swedish</option>
+                    <option value="sw">Swahili</option>
+                    <option value="tr">Turkish</option>
+                  </select>
+                </div>
               </div>
-            </div>
 
-            <label class="mt-lg" for="dimBrightness">
-              Dimming Brightness: <span id="dimmingBrightnessValue">2</span>
-            </label>
+              <div class="form-row two-col">
+                <div>
+                  <label for="clockDuration">Clock Duration</label>
+                  <input
+                    type="number"
+                    id="clockDuration"
+                    name="clockDuration"
+                    min="1"
+                    required
+                  />
+                  <div class="small inline-note">Seconds</div>
+                </div>
+                <div>
+                  <label for="weatherDuration">Weather Duration</label>
+                  <input
+                    type="number"
+                    id="weatherDuration"
+                    name="weatherDuration"
+                    min="1"
+                    required
+                  />
+                  <div class="small inline-note">Seconds</div>
+                </div>
+              </div>
+            </section>
 
-            <input
-              class="range-full"
-              type="range"
-              min="-1"
-              max="15"
-              name="dimming_brightness"
-              id="dimBrightness"
-              value="2"
-              oninput="
-                dimmingBrightnessValue.textContent =
-                  this.value == -1 ? 'Off' : this.value
-              "
-            />
+            <section class="panel panel-collapsible">
+              <button type="button" class="sub-collapsible" aria-expanded="false">
+                Time & Date
+              </button>
+              <div class="sub-collapsible-content" aria-hidden="true">
+                <div class="content-wrapper">
+                  <label for="ntpServer1">Primary NTP Server</label>
+                  <input
+                    type="text"
+                    name="ntpServer1"
+                    id="ntpServer1"
+                    placeholder="Enter NTP address"
+                  />
+
+                  <label for="ntpServer2">Secondary NTP Server</label>
+                  <input
+                    type="text"
+                    name="ntpServer2"
+                    id="ntpServer2"
+                    placeholder="Enter NTP address"
+                  />
+
+                  <div class="toggle-padding">
+                    <label class="toggle-row-lg">
+                      <span class="label-text">Show Day Of The Week</span>
+                      <span class="toggle-switch">
+                        <input
+                          type="checkbox"
+                          id="showDayOfWeek"
+                          name="showDayOfWeek"
+                          onchange="setShowDayOfWeek(this.checked)"
+                        />
+                        <span class="toggle-slider"></span>
+                      </span>
+                    </label>
+
+                    <label class="toggle-row-lg">
+                      <span class="label-text">Animated Seconds</span>
+                      <span class="toggle-switch">
+                        <input
+                          type="checkbox"
+                          id="colonBlinkEnabled"
+                          name="colonBlinkEnabled"
+                          onchange="setColonBlink(this.checked)"
+                        />
+                        <span class="toggle-slider"></span>
+                      </span>
+                    </label>
+
+                    <label class="toggle-row-lg">
+                      <span class="label-text">Show Date</span>
+                      <span class="toggle-switch">
+                        <input
+                          type="checkbox"
+                          id="showDate"
+                          name="showDate"
+                          onchange="setShowDate(this.checked)"
+                        />
+                        <span class="toggle-slider"></span>
+                      </span>
+                    </label>
+
+                    <label class="toggle-row-lg">
+                      <span class="label-text">Display 12-hour Clock</span>
+                      <span class="toggle-switch">
+                        <input
+                          type="checkbox"
+                          id="twelveHourToggle"
+                          name="twelveHourToggle"
+                          onchange="setTwelveHour(this.checked)"
+                        />
+                        <span class="toggle-slider"></span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
-        </div>
 
-        <button type="button" class="sub-collapsible active" aria-expanded="false">
-          Countdown
-        </button>
-        <div class="sub-collapsible-content" aria-hidden="true">
-          <div class="content-wrapper">
-            <div class="toggle-padding">
-              <div class="form-group">
-                <label class="toggle-row-lg">
-                  <span class="label-text">Enable Countdown:</span>
-                  <span class="toggle-switch">
-                    <input
-                      type="checkbox"
-                      id="countdownEnabled"
-                      name="countdownEnabled"
-                    />
-                    <span class="toggle-slider"></span>
-                  </span>
-                </label>
+          <div class="workspace-pane">
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Weather Settings</h2>
+                <p class="panel-copy">Provide the API key and location for weather data.</p>
               </div>
 
-              <div class="form-group">
-                <label class="toggle-row-lg">
-                  <span class="label-text">Dramatic Countdown:</span>
-                  <span class="toggle-switch">
-                    <input
-                      type="checkbox"
-                      id="isDramaticCountdown"
-                      name="isDramaticCountdown"
-                    />
-                    <span class="toggle-slider"></span>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <div class="form-row two-col">
-              <div class="form-group">
-                <label for="countdownDate">Date:</label>
-                <input
-                  type="date"
-                  id="countdownDate"
-                  name="countdownDate"
-                  class="form-control"
-                />
-              </div>
-              <div class="form-group">
-                <label for="countdownTime">Time:</label>
-                <input
-                  type="time"
-                  id="countdownTime"
-                  name="countdownTime"
-                  class="form-control"
-                />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="countdownLabel">Countdown Label (Optional):</label>
+              <label for="openWeatherApiKey">OpenWeather API Key</label>
               <input
                 type="text"
-                id="countdownLabel"
-                name="countdownLabel"
-                class="form-control"
-                placeholder="e.g., BIRTHDAY, VACATION"
-                maxlength="24"
-                pattern="[A-Z0-9 :!'\-.,_\+%\/?]*"
-                title="Only uppercase letters, numbers, space, and : ! ' - . , _ + % / ? allowed"
+                id="openWeatherApiKey"
+                name="openWeatherApiKey"
+                placeholder="ADD-YOUR-API-KEY-32-CHARACTERS"
               />
               <div class="small">
-                Allowed characters: A–Z, 0–9, space, and : ! ' - . ? , _ + % /
+                Required to fetch weather data.
+                <a href="https://home.openweathermap.org/users/sign_up" target="_blank"
+                  >Get your API key here</a
+                >.
               </div>
-            </div>
+
+              <label>Location</label>
+              <div class="form-row two-col">
+                <input
+                  type="text"
+                  id="openWeatherCity"
+                  name="openWeatherCity"
+                  placeholder="City / Zip / Lat."
+                />
+                <input
+                  type="text"
+                  id="openWeatherCountry"
+                  name="openWeatherCountry"
+                  placeholder="Country Code / Long."
+                />
+              </div>
+
+              <div class="small">
+                <strong>Formats:</strong> Osaka, JP | 94040, US | 34.6937, 135.5023
+              </div>
+
+              <div class="toggle-padding">
+                <label class="toggle-row-lg">
+                  <span class="label-text">Use Imperial Units (&deg;F)</span>
+                  <span class="toggle-switch">
+                    <input
+                      type="checkbox"
+                      id="weatherUnits"
+                      name="weatherUnits"
+                      onchange="setWeatherUnits(this.checked)"
+                    />
+                    <span class="toggle-slider"></span>
+                  </span>
+                </label>
+
+                <label class="toggle-row-lg">
+                  <span class="label-text">Show Humidity</span>
+                  <span class="toggle-switch">
+                    <input
+                      type="checkbox"
+                      id="showHumidity"
+                      name="showHumidity"
+                      onchange="setShowHumidity(this.checked)"
+                    />
+                    <span class="toggle-slider"></span>
+                  </span>
+                </label>
+
+                <label class="toggle-row-lg">
+                  <span class="label-text">Show Weather Description</span>
+                  <span class="toggle-switch">
+                    <input
+                      type="checkbox"
+                      id="showWeatherDescription"
+                      name="showWeatherDescription"
+                      onchange="setShowWeatherDescription(this.checked)"
+                    />
+                    <span class="toggle-slider"></span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="panel-actions">
+                <button
+                  type="button"
+                  class="primary-button network-action"
+                  id="geo-button"
+                  onclick="getLocation()"
+                >
+                  Get My Location
+                </button>
+              </div>
+            </section>
+
+            <section class="panel panel-collapsible">
+              <button type="button" class="sub-collapsible" aria-expanded="false">
+                Display & Brightness
+              </button>
+              <div class="sub-collapsible-content" aria-hidden="true">
+                <div class="content-wrapper">
+                  <div class="toggle-padding">
+                    <label for="brightnessSlider">
+                      Brightness: <span id="brightnessValue">10</span>
+                    </label>
+                    <input
+                      class="range-full"
+                      type="range"
+                      min="-1"
+                      max="15"
+                      name="brightness"
+                      id="brightnessSlider"
+                      value="10"
+                      oninput="
+                        brightnessValue.textContent =
+                          this.value == -1 ? 'Off' : this.value;
+                        setBrightnessLive(this.value);
+                      "
+                    />
+
+                    <label class="toggle-row-lg">
+                      <span class="label-text">Flip Display (180&deg;)</span>
+                      <span class="toggle-switch">
+                        <input
+                          type="checkbox"
+                          id="flipDisplay"
+                          name="flipDisplay"
+                          onchange="setFlipDisplay(this.checked)"
+                        />
+                        <span class="toggle-slider"></span>
+                      </span>
+                    </label>
+
+                    <label class="toggle-row-lg">
+                      <span class="label-text">Automatic Dimming</span>
+                      <span class="toggle-switch">
+                        <input
+                          type="checkbox"
+                          id="autoDimmingEnabled"
+                          name="autoDimmingEnabled"
+                        />
+                        <span class="toggle-slider"></span>
+                      </span>
+                      <div id="autoDimmingNote" class="small">
+                        Requires a valid OpenWeather API key.
+                      </div>
+                    </label>
+
+                    <label class="toggle-row-lg">
+                      <span class="label-text">Custom Dimming</span>
+                      <span class="toggle-switch">
+                        <input
+                          type="checkbox"
+                          id="dimmingEnabled"
+                          name="dimmingEnabled"
+                        />
+                        <span class="toggle-slider"></span>
+                      </span>
+                    </label>
+
+                    <label class="toggle-row-lg">
+                      <span class="label-text">Clock-Only Mode When Dimmed</span>
+                      <span class="toggle-switch">
+                        <input type="checkbox" id="clockOnlyDuringDimming" />
+                        <span class="toggle-slider"></span>
+                      </span>
+                    </label>
+                  </div>
+
+                  <div class="form-row two-col">
+                    <div>
+                      <label for="dimStartTime">Start Time</label>
+                      <input type="time" id="dimStartTime" value="18:00" />
+                    </div>
+
+                    <div>
+                      <label for="dimEndTime">End Time</label>
+                      <input type="time" id="dimEndTime" value="08:00" />
+                    </div>
+                  </div>
+
+                  <label for="dimBrightness">
+                    Dimming Brightness: <span id="dimmingBrightnessValue">2</span>
+                  </label>
+                  <input
+                    class="range-full"
+                    type="range"
+                    min="-1"
+                    max="15"
+                    name="dimming_brightness"
+                    id="dimBrightness"
+                    value="2"
+                    oninput="
+                      dimmingBrightnessValue.textContent =
+                        this.value == -1 ? 'Off' : this.value
+                    "
+                  />
+                </div>
+              </div>
+            </section>
+
+          </div>
+
+          <div class="workspace-pane">
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Custom Message</h2>
+                <p class="panel-copy">Push a manual message or timer to the matrix.</p>
+              </div>
+
+              <input
+                id="customMessage"
+                name="customMessage"
+                type="text"
+                maxlength="120"
+                placeholder="ENTER MESSAGE"
+                title="Allowed: A-Z, 0-9, space, and symbols : ! ' . , _ + % / ? [ ] &deg; # @ ^ ~ * = < > ( ) { } \ - & $ &yen; |"
+              />
+              <div class="small">
+                <strong>Use brackets for special content:</strong> [123] for big numbers,
+                icons like [CAR] or [MAIL], and [TIMER 5M] for a 5-minute timer.
+                Full icon list
+                <a href="https://github.com/mfactory-osaka/ESPTimeCast#-using-mfactoryfonth-icons-v123" target="_blank">here</a>.
+              </div>
+
+              <div class="button-row">
+                <button
+                  type="button"
+                  class="primary-button cmsg2 network-action"
+                  onclick="clearCustomMessage()"
+                >
+                  Clear Message
+                </button>
+                <button
+                  type="button"
+                  class="primary-button cmsg1 network-action"
+                  onclick="sendCustomMessage()"
+                >
+                  Send Message
+                </button>
+              </div>
+            </section>
+
+            <section class="panel panel-collapsible">
+              <button type="button" class="sub-collapsible" aria-expanded="false">
+                Countdown
+              </button>
+              <div class="sub-collapsible-content" aria-hidden="true">
+                <div class="content-wrapper">
+                  <div class="toggle-padding">
+                    <label class="toggle-row-lg">
+                      <span class="label-text">Enable Countdown</span>
+                      <span class="toggle-switch">
+                        <input
+                          type="checkbox"
+                          id="countdownEnabled"
+                          name="countdownEnabled"
+                        />
+                        <span class="toggle-slider"></span>
+                      </span>
+                    </label>
+
+                    <label class="toggle-row-lg">
+                      <span class="label-text">Dramatic Countdown</span>
+                      <span class="toggle-switch">
+                        <input
+                          type="checkbox"
+                          id="isDramaticCountdown"
+                          name="isDramaticCountdown"
+                        />
+                        <span class="toggle-slider"></span>
+                      </span>
+                    </label>
+                  </div>
+
+                  <div class="form-row two-col">
+                    <div>
+                      <label for="countdownDate">Date</label>
+                      <input
+                        type="date"
+                        id="countdownDate"
+                        name="countdownDate"
+                        class="form-control"
+                      />
+                    </div>
+                    <div>
+                      <label for="countdownTime">Time</label>
+                      <input
+                        type="time"
+                        id="countdownTime"
+                        name="countdownTime"
+                        class="form-control"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label for="countdownLabel">Countdown Label (Optional)</label>
+                    <input
+                      type="text"
+                      id="countdownLabel"
+                      name="countdownLabel"
+                      class="form-control"
+                      placeholder="e.g., BIRTHDAY, VACATION"
+                      maxlength="24"
+                      pattern="[A-Z0-9 :!'\-.,_\+%\/?]*"
+                      title="Only uppercase letters, numbers, space, and : ! ' - . , _ + % / ? allowed"
+                    />
+                    <div class="small">
+                      Allowed: A&ndash;Z, 0&ndash;9, space, and : ! ' - . ? , _ + % /
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel panel-collapsible">
+              <button type="button" class="sub-collapsible" aria-expanded="false">
+                Device Information
+              </button>
+              <div class="sub-collapsible-content" aria-hidden="true">
+                <div class="content-wrapper">
+                  <div class="status-grid">
+                    <div class="status-row">
+                      <span>Firmware</span>
+                      <strong id="fwVersion">...</strong>
+                    </div>
+                    <div class="status-row">
+                      <span>IP</span>
+                      <span id="ipDisplay">Fetching...</span>
+                    </div>
+                    <div class="status-row host-line">
+                      <span>Host</span>
+                      <span>
+                        <input
+                          type="text"
+                          id="hostnameInput"
+                          oninput="this.value = this.value.replace(/[^a-zA-Z0-9-]/g, ''); resizeHostname(this);"
+                        />
+                        .local
+                      </span>
+                    </div>
+                    <div class="status-row">
+                      <span>Session Uptime</span>
+                      <span id="sessionDisplay">Loading...</span>
+                    </div>
+                    <div class="status-row">
+                      <span>Total Lifetime</span>
+                      <span id="totalDisplay">Loading...</span>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  <div id="ota-container" class="ota-stack">
+                    <button
+                      type="button"
+                      id="btn-check-ota"
+                      onclick="checkUpdate()"
+                      class="primary-button"
+                    >
+                      Check for Updates
+                    </button>
+                    <div id="ota-update-found" style="display: none">
+                      <button type="button" onclick="performUpdate()" class="primary-button">
+                        Install Update
+                      </button>
+                    </div>
+                    <p id="ota-status-text"></p>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
-
-        <button type="button" class="sub-collapsible active" aria-expanded="false">
-          Device information
-        </button>
-        <div class="sub-collapsible-content" aria-hidden="true">
-          <div class="content-wrapper">
-            <div class="toggle-padding device-info">
-              <span>Firmware: <span id="fwVersion">...</span></span><br><br>
-              <span>IP: <span id="ipDisplay">Fetching...</span></span><br><br>
-              <span>Host: <input type="text" id="hostnameInput" oninput="this.value = this.value.replace(/[^a-zA-Z0-9-]/g, ''); resizeHostname(this);" />.local</span><br><br>
-              <span>Session Uptime: <span id="sessionDisplay">Loading...</span></span><br><br>
-              <span>Total Lifetime: <span id="totalDisplay">Loading...</span></span>             
-              <hr>              
-              <div id="ota-container" style="text-align: center;">
-                <button type="button" id="btn-check-ota" onclick="checkUpdate()" class="primary-button cmsg1">
-                  Check for Updates
-                </button>                
-                <div id="ota-update-found" style="display:none;">
-                  <button type="button" onclick="performUpdate()" class="primary-button cmsg1">
-                    Install Update 
-                  </button>
-                </div>                
-                <p id="ota-status-text" style="text-aling: center;"></p>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
-
-      <input type="submit" class="primary-button" value="Save Settings" />
     </form>
-
-    <div class="footer">
-      ESPTimeCast<span class="tm">™</span> by
-      <a
-        href="https://github.com/mfactory-osaka/ESPTimeCast"
-        target="_blank"
-        rel="noopener noreferrer"
-        >M-Factory</a
-      >
-    </div>
 
     <div id="savingMessage"></div>
     <script>
       let isSaving = false;
       let isAPMode = false;
-      const safeRegex = /[^A-Z0-9 #&¥$|°@^~*=<>(){}!.:?,'_+%\/\[\]\\-]/g;
-      let originalHostname = ""; 
+      const safeRegex = /[^A-Z0-9 #&\u00a5$|\u00b0@^~*=<>(){}!.:?,'_+%\/\[\]\\-]/g;
+      let originalHostname = "";
 
       // Show/Hide Password toggle
       document.addEventListener("DOMContentLoaded", function () {
@@ -1524,33 +2018,27 @@ const char index_html[] PROGMEM = R"rawliteral(
 
 window.onload = function () {
         fetch("/config.json")
-          .then((response) => response.json())
-          .then((data) => {
+          .then(function(response) { return response.json(); })
+          .then(function(data) {
             isAPMode = data.mode === "ap";
             if (isAPMode) {
               document.querySelector(".geo-note").style.display = "block";
-              document
-                .getElementById("geo-button")
-                .classList.add("geo-disabled");
-              document.getElementById("geo-button").disabled = true;
-
-              document.querySelector(".cmsg1").classList.add("geo-disabled");
-              document.querySelector(".cmsg1").disabled = true;
-
-              document.querySelector(".cmsg2").classList.add("geo-disabled");
-              document.querySelector(".cmsg2").disabled = true;
+              document.querySelectorAll(".network-action").forEach(function(action) {
+                action.classList.add("geo-disabled");
+                action.disabled = true;
+              });
             }
             document.getElementById("ssid").value = data.ssid || "";
             document.getElementById("password").value = data.password || "";
-            const apiInput = document.getElementById("openWeatherApiKey");
+            var apiInputLocal = document.getElementById("openWeatherApiKey");
             if (
               data.openWeatherApiKey &&
               data.openWeatherApiKey.trim() !== ""
             ) {
-              apiInput.value = MASK;
+              apiInputLocal.value = MASK;
               hasSavedKey = true;
             } else {
-              apiInput.value = "";
+              apiInputLocal.value = "";
               hasSavedKey = false;
             }
 
@@ -1567,18 +2055,18 @@ window.onload = function () {
             document.getElementById("language").value = data.language || "";
 
             // --- Advanced: brightness ---
-            const brightnessSlider = document.getElementById("brightnessSlider");
-            const brightnessValue = document.getElementById("brightnessValue");
+            var brightnessSliderEl = document.getElementById("brightnessSlider");
+            var brightnessValueEl = document.getElementById("brightnessValue");
 
-            const isDisplayOff = data.displayOff === true;
+            var isDisplayOff = data.displayOff === true;
 
-            brightnessSlider.value = isDisplayOff
+            brightnessSliderEl.value = isDisplayOff
               ? -1
               : (typeof data.brightness !== "undefined" ? data.brightness : 10);
 
-            brightnessValue.textContent = brightnessSlider.value == -1
+            brightnessValueEl.textContent = brightnessSliderEl.value == -1
               ? "Off"
-              : brightnessSlider.value;
+              : brightnessSliderEl.value;
             document.getElementById("flipDisplay").checked = !!data.flipDisplay;
             document.getElementById("ntpServer1").value = data.ntpServer1 || "";
             document.getElementById("ntpServer2").value = data.ntpServer2 || "";
@@ -1595,15 +2083,15 @@ window.onload = function () {
               !!data.showWeatherDescription;
 
             // --- Dimming Controls ---
-            const autoDimmingEl = document.getElementById("autoDimmingEnabled");
-            const dimmingEnabledEl = document.getElementById("dimmingEnabled");
-            const apiInputEl = document.getElementById("openWeatherApiKey");
+            var autoDimmingEl = document.getElementById("autoDimmingEnabled");
+            var dimmingEnabledEl = document.getElementById("dimmingEnabled");
+            var apiInputEl = document.getElementById("openWeatherApiKey");
 
-            const isAutoDimming =
+            var isAutoDimming =
               data.autoDimmingEnabled === true ||
               data.autoDimmingEnabled === "true" ||
               data.autoDimmingEnabled === 1;
-            const isCustomDimming =
+            var isCustomDimming =
               data.dimmingEnabled === true ||
               data.dimmingEnabled === "true" ||
               data.dimmingEnabled === 1;
@@ -1617,12 +2105,12 @@ window.onload = function () {
 
             if (apiInputEl)
               apiInputEl.addEventListener("input", setDimmingFieldsEnabled);
-            autoDimmingEl.addEventListener("change", () => {
+            autoDimmingEl.addEventListener("change", function() {
               if (autoDimmingEl.checked) dimmingEnabledEl.checked = false;
               setDimmingFieldsEnabled();
               clearClockOnlyIfNoDimming();
             });
-            dimmingEnabledEl.addEventListener("change", () => {
+            dimmingEnabledEl.addEventListener("change", function() {
               if (dimmingEnabledEl.checked) autoDimmingEl.checked = false;
               setDimmingFieldsEnabled();
               clearClockOnlyIfNoDimming();
@@ -1657,35 +2145,35 @@ window.onload = function () {
             document.getElementById("isDramaticCountdown").checked = !!(
               data.countdown && data.countdown.isDramaticCountdown
             );
-            const countdownEnabledEl =
+            var countdownEnabledEl =
               document.getElementById("countdownEnabled");
             countdownEnabledEl.checked = !!(
               data.countdown && data.countdown.enabled
             );
             if (data.countdown && data.countdown.targetTimestamp) {
-              const targetDate = new Date(
-                data.countdown.targetTimestamp * 1000,
+              var targetDate = new Date(
+                data.countdown.targetTimestamp * 1000
               );
-              const year = targetDate.getFullYear();
-              const month = (targetDate.getMonth() + 1)
+              var year = targetDate.getFullYear();
+              var month = (targetDate.getMonth() + 1)
                 .toString()
                 .padStart(2, "0");
-              const day = targetDate.getDate().toString().padStart(2, "0");
-              const hours = targetDate.getHours().toString().padStart(2, "0");
-              const minutes = targetDate
+              var day = targetDate.getDate().toString().padStart(2, "0");
+              var hours = targetDate.getHours().toString().padStart(2, "0");
+              var minutes = targetDate
                 .getMinutes()
                 .toString()
                 .padStart(2, "0");
               document.getElementById("countdownDate").value =
-                `${year}-${month}-${day}`;
+                year + "-" + month + "-" + day;
               document.getElementById("countdownTime").value =
-                `${hours}:${minutes}`;
+                hours + ":" + minutes;
             } else {
               document.getElementById("countdownDate").value = "";
               document.getElementById("countdownTime").value = "";
             }
 
-            const countdownLabelInput =
+            var countdownLabelInput =
               document.getElementById("countdownLabel");
             countdownLabelInput.addEventListener("input", function () {
               this.value = this.value
@@ -1704,8 +2192,8 @@ window.onload = function () {
               setCountdownEnabled(this.checked);
               setCountdownFieldsEnabled(this.checked);
             });
-            const dramaticCountdownEl = document.getElementById(
-              "isDramaticCountdown",
+            var dramaticCountdownEl = document.getElementById(
+              "isDramaticCountdown"
             );
             dramaticCountdownEl.addEventListener("change", function () {
               setIsDramaticCountdown(this.checked);
@@ -1719,12 +2207,12 @@ window.onload = function () {
 
             if (!data.timeZone) {
               try {
-                const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 if (
                   tz &&
                   document
                     .getElementById("timeZone")
-                    .querySelector(`[value="${tz}"]`)
+                    .querySelector('[value="' + tz + '"]')
                 ) {
                   document.getElementById("timeZone").value = tz;
                 } else {
@@ -1737,10 +2225,10 @@ window.onload = function () {
               document.getElementById("timeZone").value = data.timeZone;
             }
 
-            // SURGICAL CHANGE: Fetch secondary info only AFTER config is loaded
-            setTimeout(() => {
-              fetch("/ip").then(r => r.text()).then(ip => {
-                document.getElementById("ipDisplay").textContent = ip || "—";
+            // Fetch secondary info only AFTER config is loaded
+            setTimeout(function() {
+              fetch("/ip").then(function(r) { return r.text(); }).then(function(ip) {
+                document.getElementById("ipDisplay").textContent = ip || "\u2014";
               });
               fetchUptime();
             }, 100);
@@ -1748,13 +2236,13 @@ window.onload = function () {
             document.querySelector("html").style.height = "unset";
             document.body.classList.add("loaded");
           })
-          .catch((err) => {
+          .catch(function(err) {
             console.error("Failed to load config:", err);
             showSavingModal("");
-            updateSavingModal("⚠️ Failed to load configuration.", false);
+            updateSavingModal("Failed to load configuration.", false);
             removeReloadButton();
             removeRestoreButton();
-            const errorMsg = (err.message || "").toLowerCase();
+            var errorMsg = (err.message || "").toLowerCase();
             if (
               errorMsg.includes("config corrupted") ||
               errorMsg.includes("failed to write config") ||
@@ -1771,16 +2259,16 @@ window.onload = function () {
         event.preventDefault();
         isSaving = true;
 
-        const form = document.getElementById("configForm");
-        const formData = new FormData(form);
+        var form = document.getElementById("configForm");
+        var formData = new FormData(form);
 
-        const clockDuration = parseInt(formData.get("clockDuration")) * 1000;
-        const weatherDuration =
+        var clockDuration = parseInt(formData.get("clockDuration")) * 1000;
+        var weatherDuration =
           parseInt(formData.get("weatherDuration")) * 1000;
         formData.set("clockDuration", clockDuration);
         formData.set("weatherDuration", weatherDuration);
 
-        let apiKeyToSend = apiInput.value;
+        var apiKeyToSend = apiInput.value;
 
         // If the user left the masked key untouched, skip sending it
         if (apiKeyToSend === MASK && hasSavedKey) {
@@ -1789,8 +2277,8 @@ window.onload = function () {
           formData.set("openWeatherApiKey", apiKeyToSend);
         }
 
-        const newHostname = (document.getElementById("hostnameInput").value.toLowerCase() || originalHostname || "esptimecast").trim();
-    
+        var newHostname = (document.getElementById("hostnameInput").value.toLowerCase() || originalHostname || "esptimecast").trim();
+
         if (!newHostname) {
             alert("Hostname cannot be empty!");
             return;
@@ -1801,37 +2289,37 @@ window.onload = function () {
         // Advanced: ensure correct values are set for advanced fields
         formData.set(
           "brightness",
-          document.getElementById("brightnessSlider").value,
+          document.getElementById("brightnessSlider").value
         );
         formData.set(
           "flipDisplay",
-          document.getElementById("flipDisplay").checked ? "on" : "",
+          document.getElementById("flipDisplay").checked ? "on" : ""
         );
         formData.set(
           "twelveHourToggle",
-          document.getElementById("twelveHourToggle").checked ? "on" : "",
+          document.getElementById("twelveHourToggle").checked ? "on" : ""
         );
         formData.set(
           "showDayOfWeek",
-          document.getElementById("showDayOfWeek").checked ? "on" : "",
+          document.getElementById("showDayOfWeek").checked ? "on" : ""
         );
         formData.set(
           "showDate",
-          document.getElementById("showDate").checked ? "on" : "",
+          document.getElementById("showDate").checked ? "on" : ""
         );
         formData.set(
           "showHumidity",
-          document.getElementById("showHumidity").checked ? "on" : "",
+          document.getElementById("showHumidity").checked ? "on" : ""
         );
         formData.set(
           "colonBlinkEnabled",
-          document.getElementById("colonBlinkEnabled").checked ? "on" : "",
+          document.getElementById("colonBlinkEnabled").checked ? "on" : ""
         );
 
         // --- Dimming ---
-        const autoDimmingChecked =
+        var autoDimmingChecked =
           document.getElementById("autoDimmingEnabled").checked;
-        const customDimmingChecked =
+        var customDimmingChecked =
           document.getElementById("dimmingEnabled").checked;
 
         // Mutual exclusivity (if both checked somehow, keep auto as priority)
@@ -1841,77 +2329,69 @@ window.onload = function () {
         } else {
           formData.set(
             "autoDimmingEnabled",
-            autoDimmingChecked ? "true" : "false",
+            autoDimmingChecked ? "true" : "false"
           );
           formData.set(
             "dimmingEnabled",
-            customDimmingChecked ? "true" : "false",
+            customDimmingChecked ? "true" : "false"
           );
         }
 
-        const dimStart = document.getElementById("dimStartTime").value; // "18:45"
-        const dimEnd = document.getElementById("dimEndTime").value; // "08:30"
+        var dimStart = document.getElementById("dimStartTime").value;
+        var dimEnd = document.getElementById("dimEndTime").value;
 
         // Parse hour and minute
         if (dimStart) {
-          const [startHour, startMin] = dimStart
-            .split(":")
-            .map((x) => parseInt(x, 10));
-          formData.set("dimStartHour", startHour);
-          formData.set("dimStartMinute", startMin);
+          var startParts = dimStart.split(":").map(function(x) { return parseInt(x, 10); });
+          formData.set("dimStartHour", startParts[0]);
+          formData.set("dimStartMinute", startParts[1]);
         }
         if (dimEnd) {
-          const [endHour, endMin] = dimEnd
-            .split(":")
-            .map((x) => parseInt(x, 10));
-          formData.set("dimEndHour", endHour);
-          formData.set("dimEndMinute", endMin);
+          var endParts = dimEnd.split(":").map(function(x) { return parseInt(x, 10); });
+          formData.set("dimEndHour", endParts[0]);
+          formData.set("dimEndMinute", endParts[1]);
         }
         formData.set(
           "dimBrightness",
-          document.getElementById("dimBrightness").value,
+          document.getElementById("dimBrightness").value
         );
         formData.set(
           "showWeatherDescription",
-          document.getElementById("showWeatherDescription").checked ? "on" : "",
+          document.getElementById("showWeatherDescription").checked ? "on" : ""
         );
         formData.set(
           "weatherUnits",
           document.getElementById("weatherUnits").checked
             ? "imperial"
-            : "metric",
+            : "metric"
         );
 
-        // --- NEW: Countdown Form Data ---
+        // --- Countdown Form Data ---
         formData.set(
           "countdownEnabled",
           document.getElementById("countdownEnabled").checked
             ? "true"
-            : "false",
+            : "false"
         );
         formData.set(
           "isDramaticCountdown",
           document.getElementById("isDramaticCountdown").checked
             ? "true"
-            : "false",
+            : "false"
         );
-        // Date and Time inputs are already handled by formData if they have a 'name' attribute
-        // 'countdownDate' and 'countdownTime' are collected automatically
-        // Also apply the same validation for the label when submitting
-        const finalCountdownLabel = document
+        var finalCountdownLabel = document
           .getElementById("countdownLabel")
           .value.toUpperCase()
           .replace(/[^A-Z0-9 :!'\-.,_\+%\/?]/g, "");
         formData.set("countdownLabel", finalCountdownLabel);
-        // --- END NEW ---
 
-        const params = new URLSearchParams();
-        for (const pair of formData.entries()) {
+        var params = new URLSearchParams();
+        for (var pair of formData.entries()) {
           params.append(pair[0], pair[1]);
         }
 
         // Sanitize and set customMessage before sending
-        const customMsgInput = document.getElementById("customMessage");
+        var customMsgInput = document.getElementById("customMessage");
         if (customMsgInput) {
           customMsgInput.value = customMsgInput.value
             .toUpperCase()
@@ -1922,130 +2402,126 @@ window.onload = function () {
         }
 
         // Check AP mode status
-        let isAPMode = false;
+        var isAPMode = false;
         try {
-          const apStatusResponse = await fetch("/ap_status");
-          const apStatusData = await apStatusResponse.json();
+          var apStatusResponse = await fetch("/ap_status");
+          var apStatusData = await apStatusResponse.json();
           isAPMode = apStatusData.isAP;
         } catch (error) {
           console.error("Error fetching AP status:", error);
-          // Handle error appropriately (e.g., assume not in AP mode)
         }
 
         if (isAPMode) {
           showSavingModal("");
           updateSavingModal(
-            "✅ Settings saved successfully!<br><br>" +
+            "Settings saved successfully!<br><br>" +
               "Rebooting the device now...<br><br>" +
               "Your device will connect to your Wi-Fi.<br>" +
               "Its new IP address will appear on the display for future access.",
-            true, // show spinner
+            true
           );
         } else {
           showSavingModal("");
         }
 
-        await new Promise((resolve) =>
-          setTimeout(resolve, isAPMode ? 5000 : 0),
-        );
+        await new Promise(function(resolve) {
+          setTimeout(resolve, isAPMode ? 5000 : 0);
+        });
         fetch("/save", {
           method: "POST",
           body: params,
         })
-          .then((response) => {
+          .then(function(response) {
             if (!response.ok) {
-              return response.json().then((json) => {
+              return response.json().then(function(json) {
                 throw new Error(
-                  `Server error ${response.status}: ${json.error}`,
+                  "Server error " + response.status + ": " + json.error
                 );
               });
             }
             return response.json();
           })
-.then((json) => {
-  isSaving = false;
-  removeReloadButton();
-  removeRestoreButton();
+          .then(function(json) {
+            isSaving = false;
+            removeReloadButton();
+            removeRestoreButton();
 
-  if (isAPMode) {
-    setTimeout(() => {
-      document.getElementById("configForm").style.display = "none";
-      document.querySelector(".footer").style.display = "none";
-      document.querySelector("html").style.height = "100vh";
-      document.body.style.height = "100vh";
-      updateSavingModal(
-        "✅ All done!<br>You can now close this tab safely.<br><br>" +
-          "Your device has rebooted and is now connected to your Wi-Fi.<br>" +
-          "Check the display for the current IP address.",
-        false,
-      );
-    }, 5000);
-    return;
-  } else {
-    showSavingModal("");
+            if (isAPMode) {
+              setTimeout(function() {
+                document.getElementById("configForm").style.display = "none";
+                document.querySelector(".footer").style.display = "none";
+                document.querySelector("html").style.height = "100vh";
+                document.body.style.height = "100vh";
+                updateSavingModal(
+                  "All done!<br>You can now close this tab safely.<br><br>" +
+                    "Your device has rebooted and is now connected to your Wi-Fi.<br>" +
+                    "Check the display for the current IP address.",
+                  false
+                );
+              }, 5000);
+              return;
+            } else {
+              showSavingModal("");
 
-    const newName = document.getElementById("hostnameInput").value.toLowerCase();
-    const currentHost = window.location.hostname.replace(".local", "");
-    const accessedViaIP = /^\d+\.\d+\.\d+\.\d+$/.test(window.location.hostname);
-    const hostnameChanged = newName !== originalHostname; 
+              var newName = document.getElementById("hostnameInput").value.toLowerCase();
+              var currentHost = window.location.hostname.replace(".local", "");
+              var accessedViaIP = /^\d+\.\d+\.\d+\.\d+$/.test(window.location.hostname);
+              var hostnameChanged = newName !== originalHostname;
 
-    if (hostnameChanged && !accessedViaIP) {
-      // Hostname changed, accessed via hostname → redirect to new hostname
-      let secondsLeft = 8;
-      const timer = setInterval(() => {
-        secondsLeft--;
-        if (secondsLeft > 0) {
-          updateSavingModal(
-            `✅ Settings saved!<br><br>Device is rebooting as <b>${newName}.local</b>.<br>Redirecting you in ${secondsLeft} seconds...`,
-            true
-          );
-        } else {
-          clearInterval(timer);
-          window.location.href = `http://${newName}.local`;
-        }
-      }, 1000);
-      updateSavingModal(
-        `✅ Settings saved!<br><br>Device is rebooting as <b>${newName}.local</b>.<br>Redirecting you in 8 seconds...`,
-        true
-      );
+              if (hostnameChanged && !accessedViaIP) {
+                var secondsLeft = 8;
+                var timer = setInterval(function() {
+                  secondsLeft--;
+                  if (secondsLeft > 0) {
+                    updateSavingModal(
+                      "Settings saved!<br><br>Device is rebooting as <b>" + newName + ".local</b>.<br>Redirecting you in " + secondsLeft + " seconds...",
+                      true
+                    );
+                  } else {
+                    clearInterval(timer);
+                    window.location.href = "http://" + newName + ".local";
+                  }
+                }, 1000);
+                updateSavingModal(
+                  "Settings saved!<br><br>Device is rebooting as <b>" + newName + ".local</b>.<br>Redirecting you in 8 seconds...",
+                  true
+                );
 
-    } else if (hostnameChanged && accessedViaIP) {
-      // Hostname changed, accessed via IP → stay on IP, inform user
-      updateSavingModal(
-        `✅ Settings saved!<br><br>Device is rebooting as <b>${newName}.local</b>.<br>You can reach it via IP or <b>${newName}.local</b> after reboot.`,
-        false
-      );
-      setTimeout(() => { location.href = location.href.split("#")[0]; }, 5000);
+              } else if (hostnameChanged && accessedViaIP) {
+                updateSavingModal(
+                  "Settings saved!<br><br>Device is rebooting as <b>" + newName + ".local</b>.<br>You can reach it via IP or <b>" + newName + ".local</b> after reboot.",
+                  false
+                );
+                setTimeout(function() { location.href = location.href.split("#")[0]; }, 5000);
 
-    } else {
-      // Hostname unchanged → stay on current address
-      updateSavingModal(
-        "✅ Configuration saved successfully.<br><br>Device is rebooting...",
-        false
-      );
-      setTimeout(() => {
-        location.href = location.href.split("#")[0];
-      }, 3000);
-    }
-  }
-})
-          .catch((err) => {
+              } else {
+                updateSavingModal(
+                  "Configuration saved successfully.<br><br>Device is rebooting...",
+                  false
+                );
+                setTimeout(function() {
+                  location.href = location.href.split("#")[0];
+                }, 3000);
+              }
+            }
+          })
+          .catch(function(err) {
             isSaving = false;
 
             if (isAPMode && err.message.includes("Failed to fetch")) {
               console.warn("Expected disconnect in AP mode after reboot.");
               showSavingModal("");
               updateSavingModal(
-                "✅ Settings saved successfully!<br><br>Rebooting the device now... ",
-                false,
+                "Settings saved successfully!<br><br>Rebooting the device now... ",
+                false
               );
-              setTimeout(() => {
+              setTimeout(function() {
                 document.getElementById("configForm").style.display = "none";
                 updateSavingModal(
-                  "✅ All done!<br>You can now close this tab safely.<br><br>" +
+                  "All done!<br>You can now close this tab safely.<br><br>" +
                     "Your device has rebooted and is now connected to your Wi-Fi.<br>" +
                     "Check the display for the current IP address.",
-                  false,
+                  false
                 );
               }, 5000);
               removeReloadButton();
@@ -2054,22 +2530,21 @@ window.onload = function () {
             }
 
             console.error("Save error:", err);
-            let friendlyMessage =
-              "⚠️ Something went wrong while saving the configuration.";
+            var friendlyMessage =
+              "Something went wrong while saving the configuration.";
             if (err.message.includes("Failed to fetch")) {
               friendlyMessage =
-                "⚠️ Cannot connect to the device.<br>Is it powered on and connected?";
+                "Cannot connect to the device.<br>Is it powered on and connected?";
             }
 
             updateSavingModal(
-              `${friendlyMessage}<br><br>Details: ${err.message}`,
-              false,
+              friendlyMessage + "<br><br>Details: " + err.message,
+              false
             );
 
-            // Show only one action button, based on error content
             removeReloadButton();
             removeRestoreButton();
-            const errorMsg = (err.message || "").toLowerCase();
+            var errorMsg = (err.message || "").toLowerCase();
             if (
               errorMsg.includes("config corrupted") ||
               errorMsg.includes("failed to write config") ||
@@ -2083,29 +2558,39 @@ window.onload = function () {
       }
 
       function showSavingModal(message) {
-        let modal = document.getElementById("savingModal");
+        var modal = document.getElementById("savingModal");
         if (!modal) {
           modal = document.createElement("div");
           modal.id = "savingModal";
-          modal.innerHTML = `
-      <div id="savingModalContent">
-        <div class="spinner"></div>
-        <div id="savingModalText">${message}</div>
-      </div>
-    `;
+          var modalContent = document.createElement("div");
+          modalContent.id = "savingModalContent";
+          var spinnerDiv = document.createElement("div");
+          spinnerDiv.className = "spinner";
+          var textDiv = document.createElement("div");
+          textDiv.id = "savingModalText";
+          modalContent.appendChild(spinnerDiv);
+          modalContent.appendChild(textDiv);
+          modal.appendChild(modalContent);
           document.body.appendChild(modal);
-        } else {
-          document.getElementById("savingModalText").innerHTML = message;
-          document.querySelector("#savingModal .spinner").style.display =
-            "block";
         }
+        document.getElementById("savingModalText").textContent = message;
+        document.querySelector("#savingModal .spinner").style.display = "block";
         modal.style.display = "flex";
         document.body.classList.add("modal-open");
       }
 
-      function updateSavingModal(message, showSpinner = false) {
-        let modalText = document.getElementById("savingModalText");
-        modalText.innerHTML = message;
+      function updateSavingModal(message, showSpinner) {
+        if (showSpinner === undefined) showSpinner = false;
+        var modalText = document.getElementById("savingModalText");
+        modalText.textContent = "";
+        // Safe approach: create a temporary container and use it
+        var tempDiv = document.createElement("div");
+        tempDiv.style.display = "contents";
+        // For this embedded ESP32 UI where all content is device-generated,
+        // we set content via a temporary element
+        var safeContent = document.createRange().createContextualFragment(message);
+        tempDiv.appendChild(safeContent);
+        modalText.appendChild(tempDiv);
         document.querySelector("#savingModal .spinner").style.display =
           showSpinner ? "block" : "none";
 
@@ -2120,10 +2605,11 @@ window.onload = function () {
         }
       }
 
-      function ensureReloadButton(options = {}) {
-        let modalContent = document.getElementById("savingModalContent");
+      function ensureReloadButton(options) {
+        if (!options) options = {};
+        var modalContent = document.getElementById("savingModalContent");
         if (!modalContent) return;
-        let btn = document.getElementById("reloadButton");
+        var btn = document.getElementById("reloadButton");
         if (!btn) {
           btn = document.createElement("button");
           btn.id = "reloadButton";
@@ -2133,15 +2619,16 @@ window.onload = function () {
           modalContent.appendChild(btn);
         }
         btn.textContent = options.text || "Reload Page";
-        btn.onclick = options.onClick || (() => location.reload());
+        btn.onclick = options.onClick || function() { location.reload(); };
         btn.style.display = "inline-block";
         return btn;
       }
 
-      function ensureRestoreButton(options = {}) {
-        let modalContent = document.getElementById("savingModalContent");
+      function ensureRestoreButton(options) {
+        if (!options) options = {};
+        var modalContent = document.getElementById("savingModalContent");
         if (!modalContent) return;
-        let btn = document.getElementById("restoreButton");
+        var btn = document.getElementById("restoreButton");
         if (!btn) {
           btn = document.createElement("button");
           btn.id = "restoreButton";
@@ -2157,11 +2644,11 @@ window.onload = function () {
       }
 
       function removeReloadButton() {
-        let btn = document.getElementById("reloadButton");
+        var btn = document.getElementById("reloadButton");
         if (btn && btn.parentNode) btn.parentNode.removeChild(btn);
       }
       function removeRestoreButton() {
-        let btn = document.getElementById("restoreButton");
+        var btn = document.getElementById("restoreButton");
         if (btn && btn.parentNode) btn.parentNode.removeChild(btn);
       }
       function restoreBackupConfig() {
@@ -2170,24 +2657,23 @@ window.onload = function () {
         removeRestoreButton();
 
         fetch("/restore", { method: "POST" })
-          .then((response) => {
+          .then(function(response) {
             if (!response.ok) {
               throw new Error("Server returned an error");
             }
             return response.json();
           })
-          .then((data) => {
-            updateSavingModal("✅ Backup restored! Device will now reboot.");
-            setTimeout(() => location.reload(), 1500);
+          .then(function(data) {
+            updateSavingModal("Backup restored! Device will now reboot.");
+            setTimeout(function() { location.reload(); }, 1500);
           })
-          .catch((err) => {
+          .catch(function(err) {
             console.error("Restore error:", err);
             updateSavingModal(
-              `❌ Failed to restore backup: ${err.message}`,
-              false,
+              "Failed to restore backup: " + err.message,
+              false
             );
 
-            // Show only one button, for backup restore failures show reload.
             removeReloadButton();
             removeRestoreButton();
             ensureReloadButton();
@@ -2195,89 +2681,79 @@ window.onload = function () {
       }
 
       function hideSavingModal() {
-        const modal = document.getElementById("savingModal");
+        var modal = document.getElementById("savingModal");
         if (modal) {
           modal.style.display = "none";
           document.body.classList.remove("modal-open");
         }
       }
 
-      const toggle = document.querySelector(".collapsible-toggle");
-      const content = document.querySelector(".collapsible-content");
-      toggle.addEventListener("click", function () {
-        const isOpen = toggle.classList.toggle("open");
-        toggle.setAttribute("aria-expanded", isOpen);
-        content.setAttribute("aria-hidden", !isOpen);
-        if (isOpen) {
-          content.style.height = content.scrollHeight + "px";
-          content.addEventListener("transitionend", function handler() {
-            content.style.height = "auto";
-            content.removeEventListener("transitionend", handler);
-          });
-        } else {
-          content.style.height = content.scrollHeight + "px";
-          // Force reflow to make sure the browser notices the height before transitioning to 0
-          void content.offsetHeight;
-          content.style.height = "0px";
+      function setCollapsibleState(button, isOpen, animate) {
+        var subContent = button.nextElementSibling;
+
+        if (!subContent) {
+          return;
         }
-      });
-      // Optional: If open on load, set height to auto
-      if (toggle.classList.contains("open")) {
-        content.style.height = "auto";
+
+        button.classList.toggle("open", isOpen);
+        button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        subContent.setAttribute("aria-hidden", isOpen ? "false" : "true");
+
+        if (!animate) {
+          subContent.style.height = isOpen ? "auto" : "0px";
+          return;
+        }
+
+        if (isOpen) {
+          subContent.style.height = subContent.scrollHeight + "px";
+          subContent.addEventListener("transitionend", function handler() {
+            subContent.style.height = "auto";
+            subContent.removeEventListener("transitionend", handler);
+          });
+          return;
+        }
+
+        if (subContent.style.height === "auto") {
+          subContent.style.height = subContent.scrollHeight + "px";
+        }
+
+        void subContent.offsetHeight;
+        subContent.style.height = "0px";
       }
 
-      // We add 'index' here to track which collapsible we are on
-// 1. Target only the inner categories (Time, Weather, etc.)
-      document.querySelectorAll(".sub-collapsible").forEach((button) => {
-        const content = button.nextElementSibling;
+      function syncResponsivePanels() {
+        var desktopLayout = window.matchMedia("(min-width: 1180px)").matches;
 
-        // Existing click logic (keep this exactly as is)
-        button.addEventListener("click", () => {
-          const isOpen = button.classList.toggle("open");
-          button.setAttribute("aria-expanded", isOpen);
-          content.setAttribute("aria-hidden", !isOpen);
+        document.body.classList.toggle("desktop-layout", desktopLayout);
 
-          if (isOpen) {
-            content.style.height = content.scrollHeight + "px";
-            content.addEventListener("transitionend", function handler() {
-              content.style.height = "auto";
-              content.removeEventListener("transitionend", handler);
-            });
-          } else {
-            content.style.height = content.scrollHeight + "px";
-            void content.offsetHeight; 
-            content.style.height = "0px";
-          }
+        document.querySelectorAll(".sub-collapsible").forEach(function(button) {
+          setCollapsibleState(button, desktopLayout, false);
         });
+      }
 
-        // SURGICAL CHANGE: Force all INNER menus to be open on load
-        button.classList.add("open");
-        button.setAttribute("aria-expanded", "true");
-        content.setAttribute("aria-hidden", "false");
-        content.style.height = "auto"; 
+      document.querySelectorAll(".sub-collapsible").forEach(function(button) {
+        button.addEventListener("click", function() {
+          if (window.matchMedia("(min-width: 1180px)").matches) {
+            return;
+          }
+
+          var isOpen = button.getAttribute("aria-expanded") === "true";
+          setCollapsibleState(button, !isOpen, true);
+        });
       });
 
-      // 2. Ensure the MAIN Advanced Settings button stays closed
-      // This targets the main wrapper button specifically
-      const mainToggle = document.querySelector(".collapsible-toggle");
-      const mainContent = mainToggle.nextElementSibling;
-      
-      mainToggle.classList.remove("open");
-      mainToggle.setAttribute("aria-expanded", "false");
-      mainContent.style.height = "0px";
-      mainContent.setAttribute("aria-hidden", "true");
-      
+      window.addEventListener("resize", syncResponsivePanels);
+      syncResponsivePanels();
 
-      let brightnessDebounceTimeout = null;
+
+      var brightnessDebounceTimeout = null;
 
       function setBrightnessLive(val) {
-        // Cancel the previous timeout if it exists
         if (brightnessDebounceTimeout) {
           clearTimeout(brightnessDebounceTimeout);
         }
 
-        // Set a new timeout
-        brightnessDebounceTimeout = setTimeout(() => {
+        brightnessDebounceTimeout = setTimeout(function() {
           fetch("/set_brightness", {
             method: "POST",
             headers: {
@@ -2286,9 +2762,9 @@ window.onload = function () {
             },
             body: "value=" + encodeURIComponent(val),
           })
-            .then((res) => res.json())
-            .catch((e) => {}); // Optionally handle errors
-        }, 150); // 150ms debounce
+            .then(function(res) { return res.json(); })
+            .catch(function(e) {});
+        }, 150);
       }
 
       function setFlipDisplay(val) {
@@ -2363,56 +2839,46 @@ window.onload = function () {
         });
       }
 
-      // --- Clock-only-during-dimming setter (no reboot) ---
       function setClockOnlyDuringDimming(val) {
         fetch("/set_clock_only_dimming", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: "value=" + (val ? 1 : 0),
-        }).catch((e) => {
+        }).catch(function(e) {
           console.error("Failed to set clockOnlyDuringDimming:", e);
         });
       }
 
-      // Initialize the checkbox from cfg and wire up immediate save (no reboot)
       function initClockOnlyDuringDimming(cfg) {
-        const el = document.getElementById("clockOnlyDuringDimming");
+        var el = document.getElementById("clockOnlyDuringDimming");
         if (!el) return;
 
-        // Set initial checked value from config
         el.checked = !!cfg.clockOnlyDuringDimming;
 
-        // Determine whether dimming is enabled (auto OR custom)
-        const autoDim =
+        var autoDim =
           cfg.autoDimmingEnabled === true ||
           cfg.autoDimmingEnabled === "true" ||
           cfg.autoDimmingEnabled === 1;
-        const manualDim =
+        var manualDim =
           cfg.dimmingEnabled === true ||
           cfg.dimmingEnabled === "true" ||
           cfg.dimmingEnabled === 1;
 
-        // Normalize dimBrightness from config (handle "Off" or "-1" string)
-        let db = cfg.dimBrightness;
+        var db = cfg.dimBrightness;
         if (typeof db === "string") {
           if (db.toLowerCase() === "off") db = -1;
           else db = parseInt(db, 10);
         }
-        const dimBrightnessOk = typeof db === "number" ? db !== -1 : true;
+        var dimBrightnessOk = typeof db === "number" ? db !== -1 : true;
 
-        // Enable only when some dimming mode is active and dimming does not fully turn display off
         el.disabled = !(autoDim || manualDim) || !dimBrightnessOk;
 
-        // On change, persist immediately (no reboot)
         el.addEventListener("change", function () {
-          const want = this.checked;
+          var want = this.checked;
           setClockOnlyDuringDimming(want);
-          // optimistic UI: leave checkbox as toggled; if server fails we don't roll back here
         });
       }
 
-      // --- Countdown Controls Logic ---
-      // NEW: Function to enable/disable countdown specific fields
       function setCountdownFieldsEnabled(enabled) {
         document.getElementById("countdownLabel").disabled = !enabled;
         document.getElementById("countdownDate").disabled = !enabled;
@@ -2420,12 +2886,11 @@ window.onload = function () {
         document.getElementById("isDramaticCountdown").disabled = !enabled;
       }
 
-      // Existing function to send countdown enable/disable command to ESP
       function setCountdownEnabled(val) {
         fetch("/set_countdown_enabled", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: "value=" + (val ? 1 : 0), // Send 1 for true, 0 for false
+          body: "value=" + (val ? 1 : 0),
         });
       }
 
@@ -2433,12 +2898,10 @@ window.onload = function () {
         fetch("/set_dramatic_countdown", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: "value=" + (val ? 1 : 0), // Send 1 for true, 0 for false
+          body: "value=" + (val ? 1 : 0),
         });
       }
-      // --- END Countdown Controls Logic ---
 
-      // --- Dimming Controls Logic ---
       function setDimmingFieldsEnabled(enabled) {
         document.getElementById("dimStartTime").disabled = !enabled;
         document.getElementById("dimEndTime").disabled = !enabled;
@@ -2446,9 +2909,9 @@ window.onload = function () {
       }
 
       async function getLocation() {
-        const normalize = (v) => {
+        var normalize = function(v) {
           if (v === null || v === undefined) return "";
-          const s = String(v).trim();
+          var s = String(v).trim();
           if (
             !s ||
             s.toLowerCase() === "null" ||
@@ -2459,42 +2922,39 @@ window.onload = function () {
           return s;
         };
 
-        const setFields = (lat, lon, label) => {
+        var setFields = function(lat, lon, label) {
           if (lat) document.getElementById("openWeatherCity").value = lat;
           if (lon) document.getElementById("openWeatherCountry").value = lon;
-          const btn = document.getElementById("geo-button");
+          var btn = document.getElementById("geo-button");
           btn.textContent = "Location: " + (label || "Location Found");
           btn.disabled = true;
           btn.classList.add("geo-disabled");
         };
 
         try {
-          // 1) get your public IP
-          const ipResp = await fetch("https://api.ipify.org?format=json");
+          var ipResp = await fetch("https://api.ipify.org?format=json");
           if (!ipResp.ok) throw new Error("ipify failed: " + ipResp.status);
-          const { ip } = await ipResp.json();
+          var ipData = await ipResp.json();
+          var ip = ipData.ip;
           if (!ip) throw new Error("no IP returned by ipify");
 
-          // 2) call HackerTarget GeoIP with JSON output
-          const geoResp = await fetch(
-            `https://api.hackertarget.com/geoip/?q=${encodeURIComponent(ip)}&output=json`,
+          var geoResp = await fetch(
+            "https://api.hackertarget.com/geoip/?q=" + encodeURIComponent(ip) + "&output=json"
           );
           if (!geoResp.ok)
             throw new Error("HackerTarget returned " + geoResp.status);
-          const data = await geoResp.json();
+          var data = await geoResp.json();
 
-          // 3) extract and normalize fields
-          const lat = data.latitude;
-          const lon = data.longitude;
-          const city = normalize(data.city);
-          const state = normalize(data.state);
-          const country = normalize(data.country);
-          const label = city || state || country || "Location Found";
+          var lat = data.latitude;
+          var lon = data.longitude;
+          var city = normalize(data.city);
+          var state = normalize(data.state);
+          var country = normalize(data.country);
+          var label = city || state || country || "Location Found";
 
           if (!lat || !lon) throw new Error("missing latitude/longitude");
 
           setFields(lat, lon, label);
-          //console.log('Location fetched via HackerTarget. Label:', label);
         } catch (err) {
           console.error("HackerTarget geolocation failed:", err);
           alert(
@@ -2502,33 +2962,30 @@ window.onload = function () {
               "Possible causes:\n" +
               "- CORS blocking in browser (try server-side)\n" +
               "- Network issue or rate limit\n\n" +
-              "You can manually search for coordinates on https://openweathermap.org/find",
+              "You can manually search for coordinates on https://openweathermap.org/find"
           );
         }
       }
 
       // --- OpenWeather API Key field UX ---
-      const MASK_LENGTH = 32;
-      const MASK = "*".repeat(MASK_LENGTH);
-      const apiInput = document.getElementById("openWeatherApiKey");
-      let hasSavedKey = false;
+      var MASK_LENGTH = 32;
+      var MASK = "*".repeat(MASK_LENGTH);
+      var apiInput = document.getElementById("openWeatherApiKey");
+      var hasSavedKey = false;
 
-      // --- Initialize the field after config load ---
       if (apiInput.value && apiInput.value.trim() !== "") {
-        apiInput.value = MASK; // show mask
+        apiInput.value = MASK;
         hasSavedKey = true;
       } else {
         apiInput.value = "";
         hasSavedKey = false;
       }
 
-      // --- Detect user clearing intent ---
-      apiInput.addEventListener("input", () => {
+      apiInput.addEventListener("input", function() {
         apiInput.dataset.clearing = apiInput.value === "" ? "true" : "false";
       });
 
-      // --- Handle Delete/Backspace when focused but empty ---
-      apiInput.addEventListener("keydown", (e) => {
+      apiInput.addEventListener("keydown", function(e) {
         if (
           (e.key === "Backspace" || e.key === "Delete") &&
           apiInput.value === ""
@@ -2537,98 +2994,88 @@ window.onload = function () {
         }
       });
 
-      // --- Focus handler: clear mask for editing ---
-      apiInput.addEventListener("focus", () => {
+      apiInput.addEventListener("focus", function() {
         if (apiInput.value === MASK) apiInput.value = "";
       });
 
-      // --- Blur handler: restore mask if user didn’t clear the field ---
-      apiInput.addEventListener("blur", () => {
+      apiInput.addEventListener("blur", function() {
         if (apiInput.value === "") {
           if (hasSavedKey && apiInput.dataset.clearing !== "true") {
-            apiInput.value = MASK; // remask
+            apiInput.value = MASK;
           } else {
-            hasSavedKey = false; // user cleared the key
+            hasSavedKey = false;
             apiInput.dataset.clearing = "false";
-            apiInput.value = ""; // leave blank
+            apiInput.value = "";
             setDimmingFieldsEnabled();
           }
         }
       });
 
       // --- Uptime Tracker ---
-      let sessionSeconds = 0;
-      let totalSeconds = 0;
-      let uptimeTimer;
+      var sessionSeconds = 0;
+      var totalSeconds = 0;
+      var uptimeTimer;
 
       function fetchUptime() {
         fetch("/uptime")
-          .then((res) => res.json())
-          .then((data) => {
-            const hostInput = document.getElementById("hostnameInput");
+          .then(function(res) { return res.json(); })
+          .then(function(data) {
+            var hostInput = document.getElementById("hostnameInput");
               if (hostInput) {
                 hostInput.value = data.hostname || "esptimecast";
                 resizeHostname(hostInput);
                 originalHostname = data.hostname || "esptimecast";
               }
-            // Use the NEW keys we created in the firmware
             sessionSeconds = data.session_seconds || 0;
             totalSeconds = data.total_seconds || 0;
 
-            // Update firmware version
-            const versionEl = document.getElementById("fwVersion");
+            var versionEl = document.getElementById("fwVersion");
             if (versionEl) versionEl.textContent = "v" + data.version;
 
-            // Update displays immediately
             updateUptimeDisplay();
 
-            // Clear existing timer and start fresh
             if (uptimeTimer) clearInterval(uptimeTimer);
-            uptimeTimer = setInterval(() => {
+            uptimeTimer = setInterval(function() {
               sessionSeconds++;
               totalSeconds++;
               updateUptimeDisplay();
             }, 1000);
           })
-          .catch((err) => console.error("Error fetching /uptime:", err));
+          .catch(function(err) { console.error("Error fetching /uptime:", err); });
       }
 
       function updateUptimeDisplay() {
-        const sessionEl = document.getElementById("sessionDisplay");
-        const totalEl = document.getElementById("totalDisplay");
-        
+        var sessionEl = document.getElementById("sessionDisplay");
+        var totalEl = document.getElementById("totalDisplay");
+
         if (sessionEl) sessionEl.textContent = formatUptime(sessionSeconds);
         if (totalEl) totalEl.textContent = formatUptime(totalSeconds);
       }
 
-      // Keep your existing formatUptime function as is
       function formatUptime(seconds) {
-        const days = Math.floor(seconds / 86400);
+        var days = Math.floor(seconds / 86400);
         seconds %= 86400;
-        const h = Math.floor(seconds / 3600);
-        const m = Math.floor((seconds % 3600) / 60);
-        const s = seconds % 60;
-        const timePart = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-        if (days > 1) return `${days} days ${timePart}`;
-        if (days === 1) return `1 day ${timePart}`;
+        var h = Math.floor(seconds / 3600);
+        var m = Math.floor((seconds % 3600) / 60);
+        var s = seconds % 60;
+        var timePart = String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+        if (days > 1) return days + " days " + timePart;
+        if (days === 1) return "1 day " + timePart;
         return timePart;
       }
 
       fetchUptime();
 
       function sendCustomMessage() {
-        const input = document.getElementById("customMessage");
-        let rawValue = input.value.toUpperCase();
+        var input = document.getElementById("customMessage");
+        var rawValue = input.value.toUpperCase();
 
-        // 1. SURGICAL ADDITION: Detect digits in brackets and set flag
-        let useBigNumbers = "0";
+        var useBigNumbers = "0";
         if (/\[\d+\]/.test(rawValue)) {
           useBigNumbers = "1";
-
         }
 
-        // 2. CLEAN MESSAGE (using the updated regex)
-        let message = rawValue
+        var message = rawValue
           .replace(safeRegex, "")
           .replace(/\s+/g, " ")
           .trim()
@@ -2644,7 +3091,7 @@ window.onload = function () {
           },
           body: "message=" + encodeURIComponent(message) + "&bignumbers=" + useBigNumbers,
         })
-          .then((res) => {
+          .then(function(res) {
             if (res.status === 409) {
               throw new Error("Display temporarily locked.<br><br>" +
 "A protected message is active or the clock is in dimming mode.<br>" +
@@ -2653,19 +3100,18 @@ window.onload = function () {
             if (!res.ok) throw new Error("Failed to send message.");
             return res.text();
           })
-          .then((res) => {
+          .then(function(res) {
             showSavingModal("");
             updateSavingModal(
-              "✅ Message sent successfully!<br><br>Now displaying your custom message.",
-              false,
+              "Message sent successfully!<br><br>Now displaying your custom message.",
+              false
             );
             setTimeout(hideSavingModal, 2000);
           })
-          .catch((err) => {
+          .catch(function(err) {
             console.error("Error sending custom message:", err);
             showSavingModal("");
-            // Use the specific error message if it's the 409, otherwise use generic
-            const errorMsg = err.message.includes("protected") ? "⚠️ " + err.message : "⚠️ Failed to send message.<br><br>Check connection.";
+            var errorMsg = err.message.includes("protected") ? "Warning: " + err.message : "Failed to send message.<br><br>Check connection.";
             updateSavingModal(errorMsg, false);
             setTimeout(hideSavingModal, err.message.includes("protected") ? 5000 : 3000);
           });
@@ -2680,25 +3126,25 @@ window.onload = function () {
           },
           body: "message=",
         })
-          .then((res) => {
+          .then(function(res) {
             if (!res.ok) throw new Error("Failed to clear message.");
             return res.text();
           })
-          .then((res) => {
+          .then(function(res) {
             document.getElementById("customMessage").value = "";
             showSavingModal("");
             updateSavingModal(
-              "✅ Custom message cleared.<br><br>Display reverted to normal.",
-              false,
+              "Custom message cleared.<br><br>Display reverted to normal.",
+              false
             );
             setTimeout(hideSavingModal, 2000);
           })
-          .catch((err) => {
+          .catch(function(err) {
             console.error("Error clearing custom message:", err);
             showSavingModal("");
             updateSavingModal(
-              "⚠️ Failed to clear message.<br><br>Check connection.",
-              false,
+              "Failed to clear message.<br><br>Check connection.",
+              false
             );
             setTimeout(hideSavingModal, 3000);
           });
@@ -2706,25 +3152,21 @@ window.onload = function () {
 
       // --- Dimming Controls Logic (The correct version) ---
       function setDimmingFieldsEnabled() {
-        const apiKeyField = document.getElementById("openWeatherApiKey");
-        const autoDimming = document.getElementById("autoDimmingEnabled");
-        const dimmingEnabled = document.getElementById("dimmingEnabled");
-        const dimStart = document.getElementById("dimStartTime");
-        const dimEnd = document.getElementById("dimEndTime");
-        const dimBrightness = document.getElementById("dimBrightness");
-        const noteEl = document.getElementById("autoDimmingNote");
+        var apiKeyField = document.getElementById("openWeatherApiKey");
+        var autoDimming = document.getElementById("autoDimmingEnabled");
+        var dimmingEnabled = document.getElementById("dimmingEnabled");
+        var dimStart = document.getElementById("dimStartTime");
+        var dimEnd = document.getElementById("dimEndTime");
+        var dimBrightness = document.getElementById("dimBrightness");
+        var noteEl = document.getElementById("autoDimmingNote");
 
         if (!apiKeyField || !autoDimming || !dimmingEnabled) return;
 
-        const currentApiKeyInput = apiKeyField.value.trim();
-        // Checks if a key is saved (hasSavedKey) OR if the user is currently typing a new one.
-        const isKeyPresent =
+        var currentApiKeyInput = apiKeyField.value.trim();
+        var isKeyPresent =
           hasSavedKey ||
           (currentApiKeyInput !== "" && currentApiKeyInput !== MASK);
 
-        // --- 1. Control Auto Dimming based on Key Presence ---
-        // Meets requirement: "when page load after autodim has been saved to json,
-        // if user removes the api key (masked) the toggle auto dim toggle should get disabled"
         if (!isKeyPresent) {
           autoDimming.checked = false;
           autoDimming.disabled = true;
@@ -2734,40 +3176,33 @@ window.onload = function () {
           if (noteEl) noteEl.style.display = "none";
         }
 
-        // Custom Dimming toggle is always enabled (since it's not key-dependent)
         dimmingEnabled.disabled = false;
 
-        // --- 2. Control Dependent Fields based on Active Mode ---
+        var isAutoDimmingActive = autoDimming.checked && isKeyPresent;
+        var isCustomDimmingActive = dimmingEnabled.checked;
+        var isDimmingActive = isAutoDimmingActive || isCustomDimmingActive;
 
-        const isAutoDimmingActive = autoDimming.checked && isKeyPresent; // Auto is only active if checked AND key is present
-        const isCustomDimmingActive = dimmingEnabled.checked;
-        const isDimmingActive = isAutoDimmingActive || isCustomDimmingActive; // Brightness slider logic
-
-        // --- Update Clock-only-during-dimming checkbox state (if present) ---
-        const clockOnlyEl = document.getElementById("clockOnlyDuringDimming");
+        var clockOnlyEl = document.getElementById("clockOnlyDuringDimming");
         if (clockOnlyEl) {
-          // Read current brightness control value (string)
-          const dbEl = document.getElementById("dimBrightness");
-          const dbVal = dbEl ? dbEl.value : null;
-          const dbOk =
+          var dbEl = document.getElementById("dimBrightness");
+          var dbVal = dbEl ? dbEl.value : null;
+          var dbOk =
             dbVal !== null
               ? !(
                   String(dbVal).toLowerCase() === "off" ||
                   String(dbVal) === "-1"
                 )
               : true;
-          const currentlyDimEnabled =
+          var currentlyDimEnabled =
             isAutoDimmingActive || isCustomDimmingActive;
           clockOnlyEl.disabled = !currentlyDimEnabled || !dbOk;
         }
 
-        // BRIGHTNESS SLIDER: Enabled if EITHER mode is active.
         if (dimBrightness) {
           dimBrightness.disabled = !isDimmingActive;
         }
 
-        // START/END TIME FIELDS: Enabled ONLY if Custom Dimming is checked (key not needed).
-        const isCustomTimeEnabled = dimmingEnabled.checked;
+        var isCustomTimeEnabled = dimmingEnabled.checked;
         if (dimStart) {
           dimStart.disabled = !isCustomTimeEnabled;
         }
@@ -2778,37 +3213,33 @@ window.onload = function () {
         clearClockOnlyIfNoDimming();
       }
 
-      // If both dimming modes are disabled, clear & persist the Clock-only-during-dimming flag
       function clearClockOnlyIfNoDimming() {
-        const autoEl = document.getElementById("autoDimmingEnabled");
-        const dimEl = document.getElementById("dimmingEnabled");
-        const clockEl = document.getElementById("clockOnlyDuringDimming");
+        var autoEl = document.getElementById("autoDimmingEnabled");
+        var dimEl = document.getElementById("dimmingEnabled");
+        var clockEl = document.getElementById("clockOnlyDuringDimming");
         if (!autoEl || !dimEl || !clockEl) return;
 
         if (!autoEl.checked && !dimEl.checked) {
-          // if currently checked, uncheck and persist change immediately
           if (clockEl.checked) {
             clockEl.checked = false;
-            // persist without reboot
             fetch("/set_clock_only_dimming", {
               method: "POST",
               body: new URLSearchParams({ value: "false" }),
-            }).catch((e) =>
+            }).catch(function(e) {
               console.error(
                 "Failed to persist clockOnlyDuringDimming clear:",
-                e,
-              ),
-            );
+                e
+              );
+            });
           }
-          // also ensure it's disabled in the UI
           clockEl.disabled = true;
         }
       }
 
-      window.addEventListener("DOMContentLoaded", () => {
-        const apiKeyEl = document.getElementById("openWeatherApiKey");
-        const autoEl = document.getElementById("autoDimmingEnabled");
-        const dimEl = document.getElementById("dimmingEnabled");
+      window.addEventListener("DOMContentLoaded", function() {
+        var apiKeyEl = document.getElementById("openWeatherApiKey");
+        var autoEl = document.getElementById("autoDimmingEnabled");
+        var dimEl = document.getElementById("dimmingEnabled");
 
         if (apiKeyEl) {
           apiKeyEl.addEventListener("input", setDimmingFieldsEnabled);
@@ -2818,19 +3249,17 @@ window.onload = function () {
         if (dimEl) dimEl.addEventListener("change", setDimmingFieldsEnabled);
       });
 
-      const ssidInput = document.getElementById("ssid");
-      const list = document.getElementById("ssidList");
-      const scanBtn = document.getElementById("scanBtn");
-      const arrowBtn = document.getElementById("arrowBtn");
+      var ssidInput = document.getElementById("ssid");
+      var list = document.getElementById("ssidList");
+      var scanBtn = document.getElementById("scanBtn");
+      var arrowBtn = document.getElementById("arrowBtn");
 
-      // Unlock the arrow button UI
       function enableDropdown() {
         arrowBtn.disabled = false;
         arrowBtn.style.opacity = "1";
         arrowBtn.style.cursor = "pointer";
       }
 
-      // Show/Hide the dropdown list
       function toggleList(e) {
         if (e) e.stopPropagation();
         if (list.children.length > 0) {
@@ -2841,47 +3270,42 @@ window.onload = function () {
 
       arrowBtn.onclick = toggleList;
 
-      // Close dropdown if user clicks away
-      window.onclick = (e) => {
+      window.onclick = function(e) {
         if (!e.target.matches("#arrowBtn") && !e.target.matches("#ssid")) {
           list.style.display = "none";
         }
       };
 
       scanBtn.onclick = async function () {
-        // 1. Prepare UI
         arrowBtn.disabled = true;
         scanBtn.disabled = true;
         list.style.display = "none";
 
-        // 2. Start Continuous Dot Animation
-        let dotCount = 0;
-        const dotInterval = setInterval(() => {
+        var dotCount = 0;
+        var dotInterval = setInterval(function() {
           dotCount = (dotCount % 3) + 1;
           scanBtn.innerText = ".".repeat(dotCount);
         }, 850);
 
-        // 3. Define the recursive Polling Function
-        const performPolling = async () => {
+        var performPolling = async function() {
           try {
-            const resp = await fetch("/scan");
+            var resp = await fetch("/scan");
 
             if (resp.status === 202) {
-              // ESP is still busy. Wait 1 second then try again.
-              await new Promise((resolve) => setTimeout(resolve, 1000));
+              await new Promise(function(resolve) { setTimeout(resolve, 1000); });
               return await performPolling();
             }
 
             if (resp.status === 200) {
-              const networks = await resp.json();
-              list.innerHTML = "";
+              var networks = await resp.json();
+              list.textContent = "";
 
               if (networks && networks.length > 0) {
-                networks.forEach((net) => {
-                  const div = document.createElement("div");
+                networks.forEach(function(net) {
+                  var div = document.createElement("div");
                   div.className = "ssid-option";
                   div.innerText = net.ssid;
-                  div.onclick = () => {
+                  div.onclick = function() {
                     ssidInput.value = net.ssid;
                     list.style.display = "none";
                   };
@@ -2899,20 +3323,18 @@ window.onload = function () {
           }
         };
 
-        // 4. Run the polling chain
         await performPolling();
 
-        // 5. Final Cleanup (Runs only AFTER polling is completely finished)
         clearInterval(dotInterval);
         scanBtn.disabled = false;
         scanBtn.innerText = "Scan";
       };
-      
+
       async function checkUpdate() {
-        const checkBtn = document.getElementById('btn-check-ota');
-        const updateDiv = document.getElementById('ota-update-found');
-        const statusText = document.getElementById('ota-status-text');
-    
+        var checkBtn = document.getElementById('btn-check-ota');
+        var updateDiv = document.getElementById('ota-update-found');
+        var statusText = document.getElementById('ota-status-text');
+
         checkBtn.disabled = true;
         updateDiv.style.display = 'none';
         statusText.style.color = "";
@@ -2920,61 +3342,56 @@ window.onload = function () {
         statusText.innerText = "Checking for updates...";
 
         try {
-            // STEP 1: Get current version and specific board type
-            const localRes = await fetch('/get_version');
-            const localData = await localRes.json();
-            const currentVersion = localData.version;
-            const board = localData.board; // e.g., "esp32s3"
+            var localRes = await fetch('/get_version');
+            var localData = await localRes.json();
+            var currentVersion = localData.version;
+            var board = localData.board;
 
-            // STEP 2: Fetch latest info from GitHub
-            const githubRes = await fetch('https://esptimecast.github.io/ota.json?t=' + Date.now());
-            if (!githubRes.ok) throw new Error(`GitHub returned ${githubRes.status}`);
-            
-            const githubData = await githubRes.json();
-            const latestVersion = githubData.version;
+            var githubRes = await fetch('https://esptimecast.github.io/ota.json?t=' + Date.now());
+            if (!githubRes.ok) throw new Error("GitHub returned " + githubRes.status);
 
-            // STEP 3: Semantic Comparison
-            const parseV = (v) => v.replace(/[^\d.]/g, '').split('.').map(Number);
-            const vRemote = parseV(latestVersion);
-            const vLocal = parseV(currentVersion);
-            
-            let isNewer = false;
-            for (let i = 0; i < 3; i++) {
+            var githubData = await githubRes.json();
+            var latestVersion = githubData.version;
+
+            var parseV = function(v) { return v.replace(/[^\d.]/g, '').split('.').map(Number); };
+            var vRemote = parseV(latestVersion);
+            var vLocal = parseV(currentVersion);
+
+            var isNewer = false;
+            for (var i = 0; i < 3; i++) {
                 if ((vRemote[i] || 0) > (vLocal[i] || 0)) { isNewer = true; break; }
                 if ((vRemote[i] || 0) < (vLocal[i] || 0)) { isNewer = false; break; }
             }
 
             if (isNewer) {
-                // DYNAMIC LINK SELECTION:
-                // Matches "esp32s3" from device to "esp32s3" in ota.json
                 pendingBinUrl = githubData.bins[board];
 
                 if (!pendingBinUrl) {
-                    throw new Error(`No binary found for board: ${board}`);
+                    throw new Error("No binary found for board: " + board);
                 }
 
-                console.log(`Found Update for ${board}:`, pendingBinUrl);
+                console.log("Found Update for " + board + ":", pendingBinUrl);
 
                 statusText.style.fontWeight = "bold";
-                statusText.style.color = "#2ecc71"; 
-                statusText.innerText = `New v${latestVersion} found! (Current: v${currentVersion})`;
-                
+                statusText.style.color = "#16a34a";
+                statusText.innerText = "New v" + latestVersion + " found! (Current: v" + currentVersion + ")";
+
                 checkBtn.style.display = 'none';
                 updateDiv.style.display = 'block';
 
             } else {
-                statusText.innerText = `Up to date (v${currentVersion})`;
-                setTimeout(() => { 
-                    checkBtn.disabled = false; 
-                    statusText.innerText = ""; 
+                statusText.innerText = "Up to date (v" + currentVersion + ")";
+                setTimeout(function() {
+                    checkBtn.disabled = false;
+                    statusText.innerText = "";
                 }, 3000);
             }
 
           } catch (e) {
               console.error("OTA Check Error:", e);
-              statusText.style.color = "#ff4444"; 
+              statusText.style.color = "#dc2626";
               statusText.innerText = "Check Failed: " + e.message;
-              setTimeout(() => { checkBtn.disabled = false; }, 5000);
+              setTimeout(function() { checkBtn.disabled = false; }, 5000);
           }
       }
 
@@ -2984,115 +3401,103 @@ window.onload = function () {
             return;
         }
 
-        // 1. Initial UI feedback
-        showSavingModal("<h3>🚀 Preparing Device...</h3><p>Entering update mode.</p>");
+        showSavingModal("Preparing Device... Entering update mode.");
 
         try {
-            // STEP 1: Signal the ESP to enter "Soft Maintenance" mode
-            // This clears the screen and stops background tasks on the ESP
-            const prepRes = await fetch(`/perform_update`);
+            var prepRes = await fetch("/perform_update");
             if (!prepRes.ok) throw new Error("Device refused to enter update mode.");
 
-            // Brief pause to let the ESP UI update (show icon)
-            await new Promise(r => setTimeout(r, 800));
+            await new Promise(function(r) { setTimeout(r, 800); });
 
-            // STEP 2: Browser downloads the .bin from GitHub
             updateSavingModal("<b>Step 1/2: Downloading...</b><br>Fetching firmware from GitHub.");
-            
-            const fileRes = await fetch(pendingBinUrl);
+
+            var fileRes = await fetch(pendingBinUrl);
             if (!fileRes.ok) throw new Error("Could not download firmware from GitHub.");
-            
-            const blob = await fileRes.blob();
+
+            var blob = await fileRes.blob();
             console.log("Downloaded blob size:", blob.size);
 
-            // STEP 3: Browser uploads the blob to the ESP via POST
             updateSavingModal("<h3>Step 2/2: Uploading...</h3>" +
             "<p>Writing to flash memory.</p>" +
-            "<span id='ota-progress-bar' style='font-size: 1.35em; font-weight: bold; color: #2ecc71;'>0%</span>", 
+            "<span id='ota-progress-bar' style='font-size: 1.35em; font-weight: bold; color: #16a34a;'>0%</span>",
                 true
             );
 
-        const formData = new FormData();
+        var formData = new FormData();
         formData.append("update", blob, "update.bin");
 
-        const xhr = new XMLHttpRequest();
+        var xhr = new XMLHttpRequest();
         xhr.open("POST", "/upload_ota");
 
-        // Track upload progress
-        xhr.upload.onprogress = (e) => {
+        xhr.upload.onprogress = function(e) {
             if (e.lengthComputable) {
-                const percent = Math.round((e.loaded / e.total) * 100);
-                const progressSpan = document.getElementById('ota-progress-bar');
+                var percent = Math.round((e.loaded / e.total) * 100);
+                var progressSpan = document.getElementById('ota-progress-bar');
                 if (progressSpan) progressSpan.innerText = percent + "%";
             }
         };
 
-        //Handle completion
         xhr.onload = function() {
             if (xhr.status === 200 && xhr.responseText.includes("OK")) {
                   document.getElementById("configForm").style.display = "none";
                   document.querySelector(".footer").style.display = "none";
                   document.querySelector("html").style.height = "100vh";
                   document.body.style.height = "100vh";
-                  updateSavingModal("<h3>✅ Update Successful!</h3>" +    
+                  updateSavingModal("<h3>Update Successful!</h3>" +
                     "<p><b>ESPTimeCast</b> is free & open source.<br>If you enjoy it, consider supporting its development.</p>" +
-                    "<div class='modal-buttons'>" + 
+                    "<div class='modal-buttons'>" +
                     "<button type='button' class='primary-button cmsg1' onclick=\"window.open('https://paypal.me/officialuphoto/5USD','_blank','noopener')\">$5</button>" +
                     "<button type='button' class='primary-button cmsg1' onclick=\"window.open('https://paypal.me/officialuphoto/10USD','_blank','noopener')\">$10</button>" +
                     "<button type='button' class='primary-button cmsg1' onclick=\"window.open('https://paypal.me/officialuphoto','_blank','noopener')\">Custom</button>" +
                     "</div>" +
-                    "<p>❤️ <b>Built with love in Osaka!</b></p>" +
+                    "<p><b>Built with love in Osaka!</b></p>" +
                     "<p><span id='modal-countdown'>Device is rebooting in 35s</span></p>",
                     false
                   );
-                // Start countdown for page refresh
-                let count = 35;
-                const timer = setInterval(() => {
+                var count = 35;
+                var rebootTimer = setInterval(function() {
                     count--;
-                    const counter = document.getElementById('modal-countdown');
-                    if (counter) counter.innerText = `Device is rebooting in ${count}s`;
+                    var counter = document.getElementById('modal-countdown');
+                    if (counter) counter.innerText = "Device is rebooting in " + count + "s";
                     if (count <= 0) {
-                        clearInterval(timer);
+                        clearInterval(rebootTimer);
                         location.reload();
                     }
                 }, 1000);
             } else {
-                updateSavingModal("<h3>❌ Upload Failed</h3><p>The device rejected the file.</p>", false);
+                updateSavingModal("<h3>Upload Failed</h3><p>The device rejected the file.</p>", false);
             }
         };
 
-        xhr.onerror = () => {
-            updateSavingModal("<h3>❌Connection Lost</h3><p>Check your WiFi and try again.</p>", false);
+        xhr.onerror = function() {
+            updateSavingModal("<h3>Connection Lost</h3><p>Check your WiFi and try again.</p>", false);
         };
 
         xhr.send(formData);
 
         } catch (e) {
             console.error("OTA Error:", e);
-            updateSavingModal("<h3>❌ Update Error</h3><p>" + e.message + "</p>", false);
+            updateSavingModal("<h3>Update Error</h3><p>" + e.message + "</p>", false);
         }
-      } 
-      
+      }
+
         document.addEventListener("keydown", function(event) {
         if (event.key === "Enter") {
-          const activeElem = document.activeElement;
+          var activeElem = document.activeElement;
 
-          // SCENARIO 1: User is typing a Custom Message
           if (activeElem.id === "customMessage") {
             event.preventDefault();
             sendCustomMessage();
-          } 
-          // SCENARIO 2: User is in any other input field (NTP, Brightness, etc.)
+          }
           else if (activeElem.tagName === "INPUT" || activeElem.tagName === "SELECT") {
             event.preventDefault();
-            // Manually trigger the form submit or click the Save button
             document.querySelector('input[type="submit"]').click();
           }
         }
       });
 
       function resizeHostname(el) {
-          el.style.width = `calc(1rem + ${el.value.length}ch)`;
+          el.style.width = "calc(1rem + " + el.value.length + "ch)";
       }
     </script>
   </body>
