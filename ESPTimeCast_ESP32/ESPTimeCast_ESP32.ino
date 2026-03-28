@@ -3101,6 +3101,19 @@ void setup() {
   esp_log_level_set("esp_littlefs", ESP_LOG_NONE);
   Serial.println();
   Serial.println(F("[SETUP] Starting setup..."));
+
+#if defined(ESP32)
+  // ---------------------------------------------------------------------------
+  // CPU clock: run cooler on ESP32 hardware
+  // ---------------------------------------------------------------------------
+  const uint32_t targetCpuFrequencyMhz = 80;
+  const uint32_t bootCpuFrequencyMhz = getCpuFrequencyMhz();
+  if (bootCpuFrequencyMhz != targetCpuFrequencyMhz) {
+    setCpuFrequencyMhz(targetCpuFrequencyMhz);
+  }
+  Serial.printf("[SETUP] CPU frequency: %luMHz -> %luMHz\n", bootCpuFrequencyMhz, getCpuFrequencyMhz());
+#endif
+
 #if defined(ARDUINO_USB_MODE) || defined(USB_SERIAL)
   Serial.setTxTimeoutMs(50);
   Serial.println(F("[SERIAL] USB CDC detected — TX timeout enabled"));
@@ -3505,6 +3518,42 @@ String getFormattedDateText(const char *rawText) {
 }
 
 void loop() {
+  // ---------------------------------------------------------------------------
+  // Render cache: avoid pushing identical static content every loop cycle
+  // ---------------------------------------------------------------------------
+  static int renderCacheMode = -99;
+  static String lastStaticText = "";
+  static int lastStaticFrame = -1;
+  static textPosition_t lastStaticAlignment = PA_CENTER;
+  static uint8_t lastStaticSpacing = 255;
+
+  auto resetRenderCache = [&]() {
+    lastStaticText = "";
+    lastStaticFrame = -1;
+    lastStaticAlignment = PA_CENTER;
+    lastStaticSpacing = 255;
+  };
+
+  auto renderStaticText = [&](const String &text, uint8_t spacing, textPosition_t alignment = PA_CENTER) {
+    if (lastStaticText == text && lastStaticSpacing == spacing && lastStaticAlignment == alignment) {
+      return;
+    }
+
+    P.setTextAlignment(alignment);
+    P.setCharSpacing(spacing);
+    P.print(text.c_str());
+
+    lastStaticText = text;
+    lastStaticFrame = -1;
+    lastStaticAlignment = alignment;
+    lastStaticSpacing = spacing;
+  };
+
+  if (displayMode != renderCacheMode || forceMessageRestart) {
+    renderCacheMode = displayMode;
+    resetRenderCache();
+  }
+
   if (timerActive && (displayMode != 7 && displayMode != 6)) {
     displayMode = 7;
     timerSubState = 0;
@@ -3542,11 +3591,16 @@ void loop() {
       apAnimTimer = now;
       apAnimFrame++;
     }
-    P.setTextAlignment(PA_CENTER);
-    switch (apAnimFrame % 3) {
-      case 0: P.print(F("\005 ©")); break;
-      case 1: P.print(F("\005 ª")); break;
-      case 2: P.print(F("\005 «")); break;
+    int currentApFrame = apAnimFrame % 3;
+    if (currentApFrame != lastStaticFrame) {
+      P.setTextAlignment(PA_CENTER);
+      switch (currentApFrame) {
+        case 0: P.print(F("\005 ©")); break;
+        case 1: P.print(F("\005 ª")); break;
+        case 2: P.print(F("\005 «")); break;
+      }
+      lastStaticFrame = currentApFrame;
+      lastStaticText = "";
     }
     yield();
     return;
@@ -3570,9 +3624,20 @@ void loop() {
   // -----------------------------
   // Dimming (auto + manual)
   // -----------------------------
+  // ---------------------------------------------------------------------------
+  // Time cache: localtime conversion is relatively expensive, so only refresh
+  // when the current second changes.
+  // ---------------------------------------------------------------------------
+  static time_t cachedNowTime = -1;
+  static struct tm cachedTimeinfo;
+
   time_t now_time = time(nullptr);
-  struct tm timeinfo;
-  localtime_r(&now_time, &timeinfo);
+  if (now_time != cachedNowTime) {
+    localtime_r(&now_time, &cachedTimeinfo);
+    cachedNowTime = now_time;
+  }
+
+  const struct tm &timeinfo = cachedTimeinfo;
   int curHour = timeinfo.tm_hour;
   int curMinute = timeinfo.tm_min;
   int curTotal = curHour * 60 + curMinute;
@@ -3602,6 +3667,7 @@ void loop() {
   // Apply brightness / display on-off
   // -----------------------------
   static bool lastDimActive = false;  // remembers last state
+  static int lastAppliedIntensity = -999;
   int targetBrightness = dimActive ? dimBrightness : brightness;
 
   // Log only when transitioning
@@ -3627,6 +3693,7 @@ void loop() {
       displayOffByDimming = dimActive;
       displayOffByBrightness = !dimActive;
     }
+    lastAppliedIntensity = -999;
   } else {
     if (displayOff && ((dimActive && displayOffByBrightness) || (!dimActive && displayOffByDimming))) {
       P.displayShutdown(false);
@@ -3634,7 +3701,10 @@ void loop() {
       displayOffByDimming = false;
       displayOffByBrightness = false;
     }
-    P.setIntensity(targetBrightness);
+    if (lastAppliedIntensity != targetBrightness) {
+      P.setIntensity(targetBrightness);
+      lastAppliedIntensity = targetBrightness;
+    }
   }
 
   // Enforce "Clock only during dimming" if enabled
@@ -3757,13 +3827,6 @@ void loop() {
   }
 
 
-  // Only advance mode by timer for clock/weather, not description!
-  unsigned long displayDuration = (displayMode == 0) ? clockDuration : weatherDuration;
-  if ((displayMode == 0 || displayMode == 1) && millis() - lastSwitch > displayDuration) {
-    advanceDisplayMode();
-  }
-
-
   // --- MODIFIED WEATHER FETCHING LOGIC ---
   if (WiFi.status() == WL_CONNECTED) {
     if (!weatherFetchInitiated || shouldFetchWeatherNow || (millis() - lastFetch > fetchInterval)) {
@@ -3864,10 +3927,15 @@ void loop() {
       } else if (millis() - ntpAnimTimer > 750) {
         if (forceMessageRestart) return;
         ntpAnimTimer = millis();
-        switch (ntpAnimFrame % 3) {
-          case 0: P.print(F("S Y N C ®")); break;
-          case 1: P.print(F("S Y N C ¯")); break;
-          case 2: P.print(F("S Y N C º")); break;
+        int currentNtpFrame = ntpAnimFrame % 3;
+        if (currentNtpFrame != lastStaticFrame) {
+          switch (currentNtpFrame) {
+            case 0: P.print(F("S Y N C ®")); break;
+            case 1: P.print(F("S Y N C ¯")); break;
+            case 2: P.print(F("S Y N C º")); break;
+          }
+          lastStaticFrame = currentNtpFrame;
+          lastStaticText = "";
         }
         ntpAnimFrame++;
       }
@@ -3885,15 +3953,39 @@ void loop() {
           showNtpError = !showNtpError;
         }
         if (showNtpError) {
-          P.write(2);  // NTP error glyph
+          if (lastStaticFrame != 2 || lastStaticSpacing != 0 || lastStaticAlignment != PA_CENTER) {
+            P.write(2);  // NTP error glyph
+            lastStaticFrame = 2;
+            lastStaticText = "";
+            lastStaticAlignment = PA_CENTER;
+            lastStaticSpacing = 0;
+          }
         } else {
-          P.write(1);  // Weather error glyph
+          if (lastStaticFrame != 1 || lastStaticSpacing != 0 || lastStaticAlignment != PA_CENTER) {
+            P.write(1);  // Weather error glyph
+            lastStaticFrame = 1;
+            lastStaticText = "";
+            lastStaticAlignment = PA_CENTER;
+            lastStaticSpacing = 0;
+          }
         }
 
       } else if (!ntpSyncSuccessful) {
-        P.write(2);
+        if (lastStaticFrame != 2 || lastStaticSpacing != 0 || lastStaticAlignment != PA_CENTER) {
+          P.write(2);
+          lastStaticFrame = 2;
+          lastStaticText = "";
+          lastStaticAlignment = PA_CENTER;
+          lastStaticSpacing = 0;
+        }
       } else if (!weatherAvailable) {
-        P.write(1);
+        if (lastStaticFrame != 1 || lastStaticSpacing != 0 || lastStaticAlignment != PA_CENTER) {
+          P.write(1);
+          lastStaticFrame = 1;
+          lastStaticText = "";
+          lastStaticAlignment = PA_CENTER;
+          lastStaticSpacing = 0;
+        }
       }
     }
     // --- DISPLAY CLOCK ---
@@ -3934,8 +4026,7 @@ void loop() {
         // Only if we finish the while loop naturally do we mark it done
         clockScrollDone = true;
       } else {
-        P.setTextAlignment(PA_CENTER);
-        P.print(timeString);
+        renderStaticText(timeString, 0, PA_CENTER);
       }
     }
 
@@ -3961,7 +4052,7 @@ void loop() {
       } else {
         weatherDisplay = currentTemp + tempSymbol;
       }
-      P.print(weatherDisplay.c_str());
+      renderStaticText(weatherDisplay, 1, PA_CENTER);
       weatherWasAvailable = true;
     } else {
       if (weatherWasAvailable) {
@@ -3971,12 +4062,17 @@ void loop() {
       if (ntpSyncSuccessful) {
         String timeString = formattedTime;
         if (!colonVisible) timeString.replace(":", " ");
-        P.setCharSpacing(0);
-        P.print(timeString);
+        renderStaticText(timeString, 0, PA_CENTER);
       } else {
-        P.setCharSpacing(0);
-        P.setTextAlignment(PA_CENTER);
-        P.write(1);
+        if (lastStaticFrame != 1 || lastStaticSpacing != 0 || lastStaticAlignment != PA_CENTER) {
+          P.setCharSpacing(0);
+          P.setTextAlignment(PA_CENTER);
+          P.write(1);
+          lastStaticFrame = 1;
+          lastStaticText = "";
+          lastStaticAlignment = PA_CENTER;
+          lastStaticSpacing = 0;
+        }
       }
     }
     yield();
@@ -4469,23 +4565,28 @@ void loop() {
         P.setCharSpacing(1);
       }
 
-      P.setTextAlignment(PA_CENTER);
-      P.print(displayText.c_str());
+      renderStaticText(displayText, isOutdated ? 0 : 1, PA_CENTER);
       unsigned long nightscoutStart = millis();
       while (millis() - nightscoutStart < weatherDuration) {
         if (forceMessageRestart) return;  // Kicks out immediately if HA spams
-        yield();
+        delay(1);
       }
       advanceDisplayMode();
       return;
     } else {
-      P.setTextAlignment(PA_CENTER);
-      P.setCharSpacing(0);
-      P.write(15);
+      if (lastStaticFrame != 15 || lastStaticSpacing != 0 || lastStaticAlignment != PA_CENTER) {
+        P.setTextAlignment(PA_CENTER);
+        P.setCharSpacing(0);
+        P.write(15);
+        lastStaticFrame = 15;
+        lastStaticText = "";
+        lastStaticAlignment = PA_CENTER;
+        lastStaticSpacing = 0;
+      }
       unsigned long errorStart = millis();
       while (millis() - errorStart < 2000) {
         if (forceMessageRestart) return;
-        yield();
+        delay(1);
       }
       advanceDisplayMode();
       return;
@@ -4541,9 +4642,7 @@ void loop() {
       }
     }
 
-    P.setTextAlignment(PA_CENTER);
-    P.setCharSpacing(0);
-    P.print(dateString.c_str());
+    renderStaticText(dateString, 0, PA_CENTER);
 
     if (millis() - lastSwitch > weatherDuration) {
       advanceDisplayMode();
@@ -4642,14 +4741,12 @@ void loop() {
       unsigned long durationMs = (messageDisplaySeconds > 0) ? (messageDisplaySeconds * 1000UL) : weatherDuration;
 
       // 1. Initial Centered Display
-      P.setTextAlignment(PA_CENTER);
-      P.setCharSpacing(1);
-      P.print(msg.c_str());
+      renderStaticText(msg, 1, PA_CENTER);
 
       unsigned long displayUntil = millis() + durationMs;
       while (millis() < displayUntil) {
         if (forceMessageRestart) return;
-        yield();
+        delay(1);
       }
 
       // 2. THE MANUAL SHIFT (Create 4-5px of pure black)
